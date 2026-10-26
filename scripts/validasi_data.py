@@ -20,7 +20,7 @@ from pathlib import Path, PureWindowsPath
 
 KOLOM = ["No", "NIM", "Nama", "TTL", "IPK", "Predikat", "Judul", "Foto"]
 EKSTENSI_FOTO = {".jpg", ".jpeg", ".png", ".tif", ".tiff", ".psd"}
-BATAS_JUDUL = 310  # karakter; kira-kira kapasitas area judul Varian A 56.5 mm (SPEK §6)
+BATAS_JUDUL = 250  # karakter; kapasitas 8 baris area judul kartu (SPEK §6)
 BATAS_NAMA = 45
 MIN_PX = (260, 346)  # 22 x 29.3 mm @ 300 ppi
 SARAN_PX = (600, 800)

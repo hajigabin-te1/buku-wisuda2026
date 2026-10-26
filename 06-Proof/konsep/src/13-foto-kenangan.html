@@ -1,0 +1,49 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;600&family=Playfair+Display:ital,wght@1,400;1,600&family=Cinzel:wght@600;700&family=Satisfy&display=swap"><style>
+:root{--p:#EBF8FF;--s:#3081DB;--a:#FFE031;--ink:#12355E}
+*{box-sizing:border-box;margin:0;padding:0}
+.page{width:148mm;height:210mm;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse 90mm 60mm at 30% 20%,rgba(255,255,255,.9),transparent 70%),
+             radial-gradient(ellipse 80mm 50mm at 80% 75%,rgba(255,255,255,.6),transparent 70%),
+             linear-gradient(165deg,#f4fbff 0%,var(--p) 45%,#dcefff 100%);
+  font-family:'Source Sans 3',sans-serif;color:var(--ink)}
+.abs{position:absolute}
+.orn{position:absolute;width:62mm;height:62mm}
+.folio{position:absolute;bottom:6mm;text-align:center;font:600 7.5pt Montserrat;color:var(--s)}
+.watermark{position:absolute;left:0;right:0;bottom:1.5mm;text-align:center;font:600 5pt Montserrat;letter-spacing:.4mm;color:#c0392b;opacity:.8}
+.jilid{position:absolute;top:0;bottom:0;width:4mm;display:flex;align-items:center;justify-content:center}
+.jilid span{writing-mode:vertical-rl;font:600 4.5pt Montserrat;letter-spacing:.5mm;color:#c0392b;opacity:.7}
+.catatan{position:absolute;font:600 5pt Montserrat;letter-spacing:.3mm;color:#c0392b}
+.glass{background:linear-gradient(135deg,rgba(255,255,255,.88),rgba(255,255,255,.6));
+  border:.2mm solid rgba(48,129,219,.28);box-shadow:0 .6mm 2mm rgba(48,129,219,.12)}
+/* judul bagian ala referensi */
+.sec-t{font:700 12.5pt/14pt Montserrat;letter-spacing:.45mm;text-transform:uppercase;color:var(--s)}
+.sec-s{font:600 6.5pt Montserrat;letter-spacing:.55mm;text-transform:uppercase;color:var(--s);opacity:.85;margin-top:1.2mm}
+.sec-line{position:absolute;height:.15mm;background:rgba(48,129,219,.35)}
+.sec-line i{position:absolute;right:0;top:-.25mm;height:.65mm;width:38%;background:var(--a);border-radius:.3mm}
+.sec-line b{position:absolute;right:-1mm;top:-.55mm;width:1.2mm;height:1.2mm;border-radius:50%;background:var(--s)}
+.script{font-family:Satisfy,cursive;color:var(--s);line-height:1}
+.serif{font-family:Cinzel,serif;color:var(--s)}
+.puitis{font-family:'Playfair Display',serif;font-style:italic;color:var(--s)}
+.ph{position:absolute;border:.3mm dashed rgba(48,129,219,.6);border-radius:2mm;display:flex;align-items:center;
+  justify-content:center;text-align:center;font:600 5.5pt/7pt Montserrat;color:var(--s);background:rgba(255,255,255,.35);padding:1mm}
+.bar{height:2.2mm;border-radius:1.1mm;background:rgba(18,53,94,.12);margin-bottom:2.1mm}
+.bar.c{margin-left:auto;margin-right:auto}
+.tag{display:inline-block;font:600 5pt Montserrat;letter-spacing:.3mm;color:#c0392b;border:.2mm solid rgba(192,57,43,.5);
+  border-radius:1mm;padding:.4mm 1.2mm;background:rgba(255,255,255,.6)}
+/* kartu direktori */
+.card{position:absolute;border-radius:3mm}
+.foto{position:absolute;border-radius:2mm;overflow:hidden;
+  background:linear-gradient(160deg,#cfe7fb,#a9d0f3);display:flex;align-items:flex-end;justify-content:center}
+.foto svg{width:80%}
+.foto span{position:absolute;top:1mm;left:0;right:0;text-align:center;font:600 4.5pt Montserrat;color:var(--s);opacity:.8}
+.badge{position:absolute;height:4.6mm;min-width:7.5mm;padding:0 1mm;border-radius:1.6mm;background:var(--a);
+  font:700 7pt/4.6mm Montserrat;text-align:center;color:var(--ink);box-shadow:0 .3mm .8mm rgba(0,0,0,.12)}
+.lab{display:flex;gap:1mm;align-items:center;font:600 6pt/3mm 'Source Sans 3';color:var(--s);margin-bottom:.3mm;white-space:nowrap}
+.lab img{width:2.8mm;height:2.8mm;flex:none}
+.val{font:400 7.5pt/9pt 'Source Sans 3';color:var(--ink)}
+.val.nama{font:600 8pt/9.5pt Montserrat}
+.judul .val{font:400 8pt/10pt 'Source Sans 3';hyphens:none}
+</style></head><body><section class="page" style=""><img class="orn" src="../../../05-InDesign/Links/ornamen/ornamen-sudut.svg" style="bottom:-3mm;left:-3mm;width:40mm;height:40mm;transform:scaleX(-1);opacity:0.9"><img class="orn" src="../../../05-InDesign/Links/ornamen/ornamen-sudut.svg" style="top:-3mm;left:-3mm;width:36mm;height:36mm;transform:scale(-1,-1);opacity:0.7">
+<div class="abs script" style="top:20mm;left:12mm;font-size:28pt;transform:rotate(-6deg)">Foto Kenangan</div>
+<img class="abs" src="../../../05-InDesign/Links/ornamen/sapuan-emas.svg" style="top:33mm;left:14mm;width:50mm;transform:rotate(-6deg)">
+<div class="abs" style="top:48mm;left:12mm;width:118mm;height:56mm;border-radius:2.5mm;padding:1.2mm;background:#fff;box-shadow:0 .6mm 2mm rgba(48,129,219,.18);border:.35mm solid var(--a)"><div class="ph" style="position:relative;width:100%;height:100%">FOTO KENANGAN<br>(resmi)</div></div><div class="abs" style="top:108mm;left:12mm;width:57.0mm;height:34mm;border-radius:2.5mm;padding:1.2mm;background:#fff;box-shadow:0 .6mm 2mm rgba(48,129,219,.18);border:.35mm solid var(--a)"><div class="ph" style="position:relative;width:100%;height:100%">FOTO KENANGAN<br>(resmi)</div></div><div class="abs" style="top:108mm;left:73.0mm;width:57.0mm;height:34mm;border-radius:2.5mm;padding:1.2mm;background:#fff;box-shadow:0 .6mm 2mm rgba(48,129,219,.18);border:.35mm solid var(--a)"><div class="ph" style="position:relative;width:100%;height:100%">FOTO KENANGAN<br>(resmi)</div></div><div class="abs" style="top:146mm;left:12mm;width:36.666666666666664mm;height:36mm;border-radius:2.5mm;padding:1.2mm;background:#fff;box-shadow:0 .6mm 2mm rgba(48,129,219,.18);border:.35mm solid var(--a)"><div class="ph" style="position:relative;width:100%;height:100%">FOTO KENANGAN<br>(resmi)</div></div><div class="abs" style="top:146mm;left:52.666666666666664mm;width:36.666666666666664mm;height:36mm;border-radius:2.5mm;padding:1.2mm;background:#fff;box-shadow:0 .6mm 2mm rgba(48,129,219,.18);border:.35mm solid var(--a)"><div class="ph" style="position:relative;width:100%;height:100%">FOTO KENANGAN<br>(resmi)</div></div><div class="abs" style="top:146mm;left:93.33333333333333mm;width:36.666666666666664mm;height:36mm;border-radius:2.5mm;padding:1.2mm;background:#fff;box-shadow:0 .6mm 2mm rgba(48,129,219,.18);border:.35mm solid var(--a)"><div class="ph" style="position:relative;width:100%;height:100%">FOTO KENANGAN<br>(resmi)</div></div><div class="folio" style="left:12mm;right:18mm">86</div><div class="jilid" style="right:0"><span>SISI JILID</span></div><div class="watermark">KONSEP v3 · MENGIKUTI REFERENSI · DATA DUMMY / PLACEHOLDER · BUKAN FILE CETAK</div></section></body></html>

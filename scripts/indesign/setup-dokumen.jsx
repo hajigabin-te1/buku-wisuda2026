@@ -1,7 +1,8 @@
 // setup-dokumen.jsx — Buku Wisuda STIA Amuntai 2026
-// Membuat dokumen A5 dengan swatch, paragraph/character/object styles,
-// master A-Isi, B-Direktori, C-Tanpa-Nomor, dan satu kartu contoh (Varian A)
-// sebagai titik awal template Data Merge.
+// Membuat dokumen A5 dengan swatch, paragraph & object styles, master A-Isi,
+// B-Direktori, C-Tanpa-Nomor, dan satu kartu contoh (Varian A, gaya referensi
+// 01-Brief-Referensi/referensi.png) sebagai titik awal template Data Merge.
+// Ikon & ornamen SVG diambil dari 05-InDesign/Links/ (jaga struktur folder repo).
 //
 // Target  : Adobe InDesign 2020 (ExtendScript), Windows.
 // Status  : BELUM DIUJI di InDesign. Jalankan pada dokumen baru; dokumen lain tidak disentuh.
@@ -16,8 +17,8 @@
     var CFG = {
         lebar: 148, tinggi: 210, bleed: 3,             // spesifikasi percetakan
         mAtas: 12, mBawah: 15, mDalam: 18, mLuar: 12,  // margin dalam 18 mm: jilid lem panas
-        dirAtas: 26,                                   // halaman direktori: kartu mulai di bawah pita header
-        kartuL: 56.5, kartuT: 82, jarak: 5,
+        dirAtas: 27,                                   // halaman direktori: kartu mulai di bawah judul bagian
+        kartuL: 56.5, kartuT: 81, jarak: 5,
         warna: [
             ["UC-Primer-60", [235, 248, 255]],
             ["UC-Sekunder-30", [48, 129, 219]],
@@ -25,8 +26,17 @@
             ["UC-Tinta", [18, 53, 94]]
         ],
         fontJudul: "Montserrat", fontIsi: "Source Sans 3", fontPuitis: "Playfair Display",
+        fontSampul: "Cinzel", fontScript: "Satisfy",
         cadangan: "Arial"
     };
+
+    // folder Links relatif terhadap skrip: scripts/indesign/ -> root repo
+    var LINKS = File($.fileName).parent.parent.parent.fsName + "/05-InDesign/Links/";
+    if (!Folder(LINKS + "ikon").exists) {
+        // skrip disalin ke folder Scripts Panel: minta lokasi folder Links proyek
+        var pilih = Folder.selectDialog("Pilih folder 05-InDesign/Links di folder proyek Buku Wisuda");
+        LINKS = pilih ? pilih.fsName + "/" : LINKS;
+    }
 
     var log = [];
     function coba(label, fn) {
@@ -86,30 +96,29 @@
         if (p.track) s.tracking = p.track;
         if (p.after) s.spaceAfter = p.after;
         if (p.before) s.spaceBefore = p.before;
+        if (p.indent) s.leftIndent = p.indent;
         coba("bahasa " + nama, function () { s.appliedLanguage = "Indonesian"; });
         return s;
     }
     var J = CFG.fontJudul, S = CFG.fontIsi, P = CFG.fontPuitis;
+    var BIRU = sw["UC-Sekunder-30"];
     var ps = {
-        h1: pStyle("H1-Bab", { font: J, gaya: "Bold", size: 20, lead: 24, warna: sw["UC-Sekunder-30"], after: 4 }),
+        h1: pStyle("H1-Bab", { font: J, gaya: "Bold", size: 20, lead: 24, warna: BIRU, after: 4 }),
         h2: pStyle("H2-Subjudul", { font: J, gaya: "SemiBold", size: 12, lead: 15, before: 3, after: 2 }),
+        secJudul: pStyle("Bagian-Judul", { font: J, gaya: "Bold", size: 12.5, lead: 14, warna: BIRU, caps: true, track: 45 }),
+        secSub: pStyle("Bagian-Sub", { font: J, gaya: "SemiBold", size: 6.5, lead: 8, warna: BIRU, caps: true, track: 55 }),
+        sampul: pStyle("Sampul-Judul", { font: CFG.fontSampul, gaya: "Bold", size: 56, lead: 54, warna: BIRU, rata: Justification.CENTER_ALIGN, track: 40 }),
+        script: pStyle("Script-Tema", { font: CFG.fontScript, gaya: "Regular", size: 30, lead: 32, warna: BIRU }),
         isi: pStyle("Isi", { font: S, gaya: "Regular", size: 10, lead: 14, rata: Justification.LEFT_JUSTIFIED, hyph: true, after: 2 }),
-        puitis: pStyle("Puitis", { font: P, gaya: "Italic", size: 12, lead: 17, warna: sw["UC-Sekunder-30"], rata: Justification.CENTER_ALIGN }),
+        puitis: pStyle("Puitis", { font: P, gaya: "Italic", size: 12, lead: 17, warna: BIRU, rata: Justification.CENTER_ALIGN }),
         lirik: pStyle("Lirik", { font: S, gaya: "Regular", size: 10, lead: 15, rata: Justification.CENTER_ALIGN }),
-        dirHeader: pStyle("Dir-Header", { font: J, gaya: "Bold", size: 9, lead: 11, warna: PAPER, caps: true, track: 50, rata: Justification.CENTER_ALIGN }),
         dirNo: pStyle("Dir-No", { font: J, gaya: "Bold", size: 7, lead: 8, rata: Justification.CENTER_ALIGN }),
-        dirNama: pStyle("Dir-Nama", { font: J, gaya: "SemiBold", size: 8.5, lead: 10, after: 1 }),
-        dirLabel: pStyle("Dir-Label", { font: S, gaya: "Semibold", size: 5.5, lead: 7, warna: sw["UC-Sekunder-30"], caps: true, track: 40, after: 0.5 }),
+        dirLabel: pStyle("Dir-Label", { font: S, gaya: "Semibold", size: 6, lead: 8, warna: BIRU }),
+        dirNama: pStyle("Dir-Nama", { font: J, gaya: "SemiBold", size: 8, lead: 9.5, after: 1.2 }),
         dirData: pStyle("Dir-Data", { font: S, gaya: "Regular", size: 7.5, lead: 9 }),
-        dirIpk: pStyle("Dir-IPK", { font: S, gaya: "Semibold", size: 7.5, lead: 9 }),
-        dirJudul: pStyle("Dir-Judul", { font: S, gaya: "Regular", size: 8, lead: 10 }),
-        folio: pStyle("Folio", { font: J, gaya: "Medium", size: 8, warna: sw["UC-Sekunder-30"], rata: Justification.CENTER_ALIGN })
+        dirJudul: pStyle("Dir-Judul", { font: S, gaya: "Regular", size: 8, lead: 10, indent: 3.8 }),
+        folio: pStyle("Folio", { font: J, gaya: "SemiBold", size: 7.5, warna: BIRU, rata: Justification.CENTER_ALIGN })
     };
-    var csLabel = doc.characterStyles.itemByName("Dir-Label-Inline");
-    if (!csLabel.isValid) csLabel = doc.characterStyles.add({ name: "Dir-Label-Inline" });
-    setFont(csLabel, S, "Semibold");
-    csLabel.pointSize = 5.5; csLabel.capitalization = Capitalization.ALL_CAPS;
-    csLabel.fillColor = sw["UC-Sekunder-30"]; csLabel.tracking = 40;
 
     // ---------- Object Styles ----------
     function oStyle(nama, f) {
@@ -143,37 +152,22 @@
         });
     }
 
-    var osKartu = oStyle("Kaca-Kartu", function (s) { s.fillColor = PAPER; s.strokeColor = PAPER; s.strokeWeight = 0.5; });
-    opasitas(osKartu, 70); sudut(osKartu, 3); bayangan(osKartu);
+    var osKartu = oStyle("Kaca-Kartu", function (s) { s.fillColor = PAPER; s.strokeColor = BIRU; s.strokeTint = 30; s.strokeWeight = 0.5; });
+    opasitas(osKartu, 80); sudut(osKartu, 3); bayangan(osKartu);
     coba("gradient feather Kaca-Kartu", function () {
         var g = osKartu.transparencySettings.gradientFeatherSettings;
         g.applied = true; g.type = GradientType.LINEAR; g.angle = -45;
     });
 
-    var osHeader = oStyle("Kaca-Header", function (s) { s.fillColor = sw["UC-Sekunder-30"]; s.strokeColor = NONE; });
-    opasitas(osHeader, 90); sudut(osHeader, 2); inset(osHeader, [0, 3, 0, 3], true);
-
     var osChip = oStyle("Chip-Emas", function (s) { s.fillColor = sw["UC-Aksen-10"]; s.strokeColor = NONE; });
     sudut(osChip, 1.5); inset(osChip, [0, 0.5, 0, 0.5], true);
 
-    var osChipIpk = oStyle("Chip-IPK", function (s) {
-        s.fillColor = sw["UC-Aksen-10"]; s.fillTint = 30; s.strokeColor = sw["UC-Aksen-10"]; s.strokeWeight = 0.5;
-    });
-    sudut(osChipIpk, 1.5); inset(osChipIpk, [0, 2, 0, 2], true);
-
-    var osFoto = oStyle("Foto-Bingkai", function (s) { s.fillColor = sw["UC-Primer-60"]; s.strokeColor = PAPER; s.strokeWeight = 1; });
+    var osFoto = oStyle("Foto-Bingkai", function (s) { s.fillColor = sw["UC-Primer-60"]; s.strokeColor = NONE; });
     sudut(osFoto, 2);
     coba("fitting Foto-Bingkai", function () {
         osFoto.enableFrameFittingOptions = true;
         osFoto.frameFittingOptions.fittingOnEmptyFrame = EmptyFrameFittingOptions.FILL_PROPORTIONALLY;
         osFoto.frameFittingOptions.fittingAlignment = AnchorPoint.TOP_CENTER_ANCHOR;
-    });
-
-    var osOrnamen = oStyle("Ornamen-Lingkaran", function (s) { s.fillColor = sw["UC-Sekunder-30"]; s.strokeColor = NONE; });
-    opasitas(osOrnamen, 15);
-    coba("gradient feather Ornamen", function () {
-        var g = osOrnamen.transparencySettings.gradientFeatherSettings;
-        g.applied = true; g.type = GradientType.RADIAL;
     });
 
     var osTeksKartu = oStyle("Teks-Kartu", function (s) { s.fillColor = NONE; s.strokeColor = NONE; });
@@ -189,16 +183,45 @@
         r.fillColor = sw["UC-Primer-60"]; r.strokeColor = NONE;
         r.locked = true;
     }
-    function ornamen(page) {
-        var luarKanan = page.side != PageSideOptions.LEFT_HAND;
-        var cx = luarKanan ? CFG.lebar : 0;
-        var o = page.ovals.add({ geometricBounds: [-25, cx - 30, 35, cx + 30] });
-        o.appliedObjectStyle = osOrnamen;
+    function pasangSvg(page, file, b, balikH, balikV) {
+        coba("place " + file, function () {
+            var f = File(LINKS + file);
+            if (!f.exists) throw Error("file tidak ada: " + f.fsName);
+            var r = page.rectangles.add({ geometricBounds: b });
+            r.fillColor = NONE; r.strokeColor = NONE;
+            r.place(f);
+            r.fit(FitOptions.PROPORTIONALLY);
+            if (balikH) r.flipItem(Flip.HORIZONTAL, AnchorPoint.CENTER_ANCHOR);
+            if (balikV) r.flipItem(Flip.VERTICAL, AnchorPoint.CENTER_ANCHOR);
+            r.locked = true;
+        });
+    }
+    function ornamenSudut(page, ukuran) {
+        // pecahan kaca biru-emas di sudut bawah sisi luar (seperti referensi)
+        var kiri = page.side == PageSideOptions.LEFT_HAND;
+        var y2 = CFG.tinggi + CFG.bleed, y1 = y2 - ukuran;
+        var b = kiri ? [y1, -CFG.bleed, y2, -CFG.bleed + ukuran] : [y1, CFG.lebar + CFG.bleed - ukuran, y2, CFG.lebar + CFG.bleed];
+        pasangSvg(page, "ornamen/ornamen-sudut.svg", b, kiri, false);
+    }
+    function garis(page, y, x1, x2, warna, tebal, tint) {
         var g = page.graphicLines.add();
-        g.paths[0].pathPoints[0].anchor = [luarKanan ? CFG.lebar - 40 : 0, 40];
-        g.paths[0].pathPoints[1].anchor = [luarKanan ? CFG.lebar : 40, 40];
-        g.strokeWeight = 0.25; g.strokeColor = sw["UC-Sekunder-30"];
-        coba("opasitas garis", function () { g.transparencySettings.blendingSettings.opacity = 50; });
+        g.paths[0].pathPoints[0].anchor = [x1, y];
+        g.paths[0].pathPoints[1].anchor = [x2, y];
+        g.strokeWeight = tebal; g.strokeColor = warna;
+        if (tint) g.strokeTint = tint;
+        return g;
+    }
+    function judulBagian(page, judul, sub, top) {
+        // judul kapital biru + subjudul + garis tipis dengan segmen emas dan titik (gaya referensi)
+        var x = batasX(page, CFG.mDalam, CFG.mLuar);
+        var t = page.textFrames.add({ geometricBounds: [top, x[0], top + 9.5, x[1]] });
+        t.contents = judul + "\r" + sub;
+        t.paragraphs[0].appliedParagraphStyle = ps.secJudul;
+        t.paragraphs[1].appliedParagraphStyle = ps.secSub;
+        garis(page, top + 10.5, x[0], x[1], BIRU, 0.4, 35);
+        garis(page, top + 10.5, x[1] - (x[1] - x[0]) * 0.38, x[1], sw["UC-Aksen-10"], 1.8);
+        var d = page.ovals.add({ geometricBounds: [top + 9.9, x[1] - 0.6, top + 11.1, x[1] + 0.6] });
+        d.fillColor = BIRU; d.strokeColor = NONE;
     }
     function folio(page) {
         var tf = page.textFrames.add({ geometricBounds: [CFG.tinggi - 11, CFG.lebar / 2 - 15, CFG.tinggi - 6, CFG.lebar / 2 + 15] });
@@ -216,19 +239,15 @@
     for (k = 0; k < mA.pages.length; k++) {
         pg = mA.pages[k];
         pg.marginPreferences.properties = { top: CFG.mAtas, bottom: CFG.mBawah, left: CFG.mDalam, right: CFG.mLuar };
-        latar(pg); ornamen(pg); folio(pg);
+        latar(pg); ornamenSudut(pg, 44); folio(pg);
     }
     for (k = 0; k < mB.pages.length; k++) {
         pg = mB.pages[k];
         pg.marginPreferences.properties = { top: CFG.dirAtas, bottom: CFG.mBawah, left: CFG.mDalam, right: CFG.mLuar };
-        latar(pg); folio(pg);
-        var hx = batasX(pg, CFG.mDalam, CFG.mLuar);
-        var hd = pg.textFrames.add({ geometricBounds: [CFG.mAtas, hx[0], CFG.mAtas + 10, hx[1]] });
-        hd.contents = "Wisudawan Program Studi [ISI NAMA PRODI]";
-        hd.appliedObjectStyle = osHeader;
-        hd.paragraphs[0].appliedParagraphStyle = ps.dirHeader;
+        latar(pg); ornamenSudut(pg, 40); folio(pg);
+        judulBagian(pg, "Daftar Wisudawan", "Program Studi [ISI NAMA PRODI] \u00B7 Wisuda 2026", CFG.mAtas);
     }
-    for (k = 0; k < mC.pages.length; k++) { latar(mC.pages[k]); }
+    for (k = 0; k < mC.pages.length; k++) { latar(mC.pages[k]); ornamenSudut(mC.pages[k], 70); }
 
     // ---------- Halaman 1: kartu contoh Varian A (titik awal Data Merge) ----------
     var hal = doc.pages[0];
@@ -249,22 +268,36 @@
         return t;
     }
 
+    function ikonLabel(par, nama) {
+        // ikon garis (SVG) sebagai inline graphic di awal paragraf label
+        coba("ikon " + nama, function () {
+            var f = File(LINKS + "ikon/ikon-" + nama + ".svg");
+            if (!f.exists) throw Error("file tidak ada: " + f.fsName);
+            par.insertionPoints[0].contents = "\u2002";
+            par.insertionPoints[0].place(f);
+        });
+    }
+
     var bg = kotak([0, 0, CFG.kartuT, CFG.kartuL], osKartu); bg.name = "kartu-latar";
     var foto = kotak([3, 3, 32.3, 25], osFoto); foto.name = "kartu-foto";
-    var no = teks([3, 28, 7.5, 36], osChip, [[ps.dirNo, "\u00ABNo\u00BB"]]); no.name = "kartu-no";
-    var info = teks([8.5, 28, 35.5, 53.5], osTeksKartu, [
-        [ps.dirNama, "\u00ABNama\u00BB"],
-        [ps.dirData, "NIM  \u00ABNIM\u00BB"],
-        [ps.dirData, "TTL  \u00ABTTL\u00BB"]
+    var no = teks([2, 20.5, 6.6, 28], osChip, [[ps.dirNo, "\u00ABNo\u00BB"]]); no.name = "kartu-no";
+    var info = teks([3.5, 28, 33.5, 53.5], osTeksKartu, [
+        [ps.dirLabel, "Nama"], [ps.dirNama, "\u00ABNama\u00BB"],
+        [ps.dirLabel, "Tempat, Tgl. Lahir"], [ps.dirData, "\u00ABTTL\u00BB"]
     ]);
     info.name = "kartu-info";
-    coba("label inline", function () {
-        info.paragraphs[1].characters.itemByRange(0, 2).appliedCharacterStyle = csLabel;
-        info.paragraphs[2].characters.itemByRange(0, 2).appliedCharacterStyle = csLabel;
-    });
-    var ipk = teks([37, 3, 42, 53.5], osChipIpk, [[ps.dirIpk, "IPK \u00ABIPK\u00BB  \u00B7  \u00ABPredikat\u00BB"]]); ipk.name = "kartu-ipk";
-    var judul = teks([45, 3, 79, 53.5], osTeksKartu, [[ps.dirLabel, "Judul Skripsi"], [ps.dirJudul, "\u00ABJudul\u00BB"]]);
+    ikonLabel(info.paragraphs[0], "nama"); ikonLabel(info.paragraphs[2], "ttl");
+    var pemisah = garis(hal, y0 + 34.5, x0 + 3, x0 + 53.5, BIRU, 0.25, 30); pemisah.name = "kartu-pemisah";
+    var mini = [["nim", "NIM", "NIM", 3, 19], ["ipk", "IPK", "IPK", 20.5, 30], ["predikat", "Predikat", "Predikat", 31.5, 53.5]];
+    for (var m = 0; m < mini.length; m++) {
+        var t = teks([35.7, mini[m][3], 45.5, mini[m][4]], osTeksKartu,
+            [[ps.dirLabel, mini[m][1]], [ps.dirData, "\u00AB" + mini[m][2] + "\u00BB"]]);
+        t.name = "kartu-" + mini[m][0];
+        ikonLabel(t.paragraphs[0], mini[m][0]);
+    }
+    var judul = teks([46.5, 3, 78.5, 53.5], osTeksKartu, [[ps.dirLabel, "Judul Skripsi"], [ps.dirJudul, "\u00ABJudul\u00BB"]]);
     judul.name = "kartu-judul";
+    ikonLabel(judul.paragraphs[0], "judul");
 
     // catatan non-cetak di pasteboard
     var cat = hal.textFrames.add({ geometricBounds: [0, CFG.lebar + 8, 60, CFG.lebar + 68] });

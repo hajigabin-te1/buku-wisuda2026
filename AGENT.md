@@ -95,6 +95,11 @@ Pertahankan tiga unsur utama: kenangan, perjuangan, dan harapan.
 Jangan memperpanjang naskah tanpa alasan; sisakan ruang putih yang cukup.
 Pertahankan frasa tema “Untukmu, cinta” jika sesuai dengan tata letak.
 
+##Referensi desain
+- Acuan visual utama: `01-Brief-Referensi/referensi.png` (ditetapkan pemilik proyek, Okt 2026). Ikuti gaya: latar biru muda, pecahan kaca diagonal biru-emas di sudut, judul sampul serif kapital, script “Untukmu Cinta” dengan sapuan emas, judul bagian kapital biru dengan garis emas, kartu direktori berikon dengan nomor emas di pojok foto.
+- Teks, nama, foto, dan slogan di gambar referensi hanyalah contoh — jangan disalin. Ringkasan unsur yang diambil/tidak diambil ada di `docs/SPEK-DESAIN.md` §0.
+- Logo resmi: `02-Aset-Resmi/Logo/STIA.png` (jangan diubah bentuk/warnanya).
+
 ##Spesifikasi percetakan (dikonfirmasi pemilik proyek, Okt 2026)
 - Ukuran jadi 148 × 210 mm; bleed 3 mm semua sisi (ukuran dengan bleed 154 × 216 mm).
 - Margin: atas 12 mm, bawah 15 mm, dalam/sisi jilid 18 mm, luar 12 mm.

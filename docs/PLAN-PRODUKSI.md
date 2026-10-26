@@ -7,7 +7,8 @@ Legenda status: ☐ belum · ◐ berjalan · ☑ selesai
 ## Tahap 0 — Konfirmasi dan pengumpulan bahan
 ☑ Spesifikasi percetakan: A5, bleed 3 mm, margin 12/15/18/12, jilid lem panas (perfect binding), format PDF.
 ☐ Masih ditanyakan ke percetakan: PDF/X-1a atau X-4 dan profil warna; crop marks ya/tidak; halaman tunggal atau spread; kelipatan jumlah halaman; jenis kertas isi & sampul; **lebar punggung (spine)** setelah jumlah halaman final; format file sampul (bentangan depan–punggung–belakang).
-☐ Logo resmi STIA Amuntai (vektor: AI/EPS/SVG/PDF) → `02-Aset-Resmi/Logo/`.
+◐ Logo resmi STIA Amuntai → `02-Aset-Resmi/Logo/STIA.png` sudah ada (PNG 623 px: cukup sampai ±50 mm lebar pada 300 ppi; versi vektor AI/EPS/SVG/PDF tetap lebih baik bila ada).
+☑ Referensi desain: `01-Brief-Referensi/referensi.png`.
 ☐ Foto grup/kenangan resmi → `02-Aset-Resmi/Foto-Grup/`.
 ☐ Naskah resmi: Kata Pengantar, Mars, Hymne, Sambutan Ketua, Visi-Misi (STIA, Prodi Bisnis, Prodi Publik), Janji Wisudawan, Filosofi.
 ☐ Daftar nama dan jabatan: Yayasan Bakti Muslimin, Pimpinan, Senat (beserta foto bila ada).
@@ -35,27 +36,28 @@ Skrip melaporkan field kosong, NIM duplikat, nama ganda, IPK tidak wajar, foto h
 4. Tandai foto yang perlu diganti (blur, gelap, salah orang) dan kirim daftar ke panitia.
 
 ## Tahap 4 — Sistem desain di InDesign
-1. Jalankan `scripts/indesign/setup-dokumen.jsx` (lihat panduan di `scripts/README.md`). Skrip membuat dokumen A5, swatch, paragraph/character/object styles, dan master A/B/C.
+1. Jalankan `scripts/aset/buat_aset_svg.py` (sekali) lalu `scripts/indesign/setup-dokumen.jsx` (lihat panduan di `scripts/README.md`). Skrip membuat dokumen A5, swatch, paragraph/character/object styles, dan master A/B/C.
 2. Periksa hasilnya; sesuaikan bleed/margin dengan spesifikasi vendor.
 3. Simpan sebagai `05-InDesign/INDD/00-TEMPLATE-Sistem.indd` (jadikan sumber style untuk semua file lain).
 
 ## Tahap 5 — Konsep visual (persetujuan)
 Mockup di `06-Proof/konsep/` (data DUMMY, logo/foto berupa placeholder). Pilih:
 - ☑ Varian kartu direktori: **A** (dipilih Okt 2026).
-- ◐ Arah cover (opsi 1 foto grup / opsi 2 tipografis) & halaman editorial — mockup v2 di `06-Proof/konsep/`.
+- ◐ Arah visual mengikuti `01-Brief-Referensi/referensi.png` — mockup v3 di `06-Proof/konsep/` menunggu persetujuan.
+- ☐ Putuskan halaman dari referensi yang belum ada di brief: Daftar Isi, Profil Wisudawan (1 orang/halaman), Sambutan Ketua Yayasan.
 Setelah disetujui, desain dibangun ulang di InDesign sebagai objek editable.
 
 ## Tahap 6 — Template direktori + Data Merge (per prodi)
 Lakukan sekali untuk Administrasi Bisnis, lalu ulangi untuk Administrasi Publik.
 
-1. Buka `00-TEMPLATE-Sistem.indd`, *Save As* `05-InDesign/INDD/10-Direktori-Bisnis-TEMPLATE.indd`. Pastikan hanya ada **satu halaman** dengan master `B-Direktori` (halaman 1 hasil skrip sudah berisi kartu contoh). Cek Layout → Margins and Columns: atas 26 mm, bawah 15 mm, dalam 18 mm, luar 12 mm. **Hapus catatan non-cetak di pasteboard** agar tidak ikut diduplikasi.
+1. Buka `00-TEMPLATE-Sistem.indd`, *Save As* `05-InDesign/INDD/10-Direktori-Bisnis-TEMPLATE.indd`. Pastikan hanya ada **satu halaman** dengan master `B-Direktori` (halaman 1 hasil skrip sudah berisi kartu contoh). Cek Layout → Margins and Columns: atas 27 mm, bawah 15 mm, dalam 18 mm, luar 12 mm. **Hapus catatan non-cetak di pasteboard** agar tidak ikut diduplikasi.
 2. Di master `B-Direktori`, ketik nama prodi di pita header (mis. “Wisudawan Program Studi Administrasi Bisnis”).
 3. Di halaman (bukan master) hanya boleh ada **satu kartu** di pojok kiri-atas area margin (sudah dibuat skrip: latar kaca, chip No, frame foto, frame info, chip IPK, frame judul). Sesuaikan desainnya dengan konsep yang disetujui; jangan meng-group frame foto ke dalam group bertingkat.
 4. **Window → Utilities → Data Merge** → menu panel → *Select Data Source* → pilih file `.txt` UTF-16 hasil skrip (centang *Show Import Options*: Delimiter **Tab**, Encoding **Unicode**).
 5. Seleksi teks contoh `«Nama»` dan seterusnya, lalu klik nama field di panel untuk menggantinya dengan field asli `<<No>>`, `<<Nama>>`, `<<NIM>>`, `<<TTL>>`, `<<IPK>>`, `<<Predikat>>`, `<<Judul>>`. Pilih frame foto lalu klik field `Foto`.
 6. Panel Data Merge → *Content Placement Options*: Fitting **Fill Frames Proportionally**, centang **Center in Frame**, centang *Link Images*, centang *Remove Blank Lines for Empty Fields*.
 7. Centang **Preview** di panel; periksa beberapa record, termasuk record dengan judul terpanjang (lihat laporan skrip).
-8. *Create Merged Document* → Records per Document Page: **Multiple Records** → tab *Multiple Record Layout*: margin atas 26, bawah 15, kiri/dalam 18, kanan/luar 12, **Spacing between Columns 5 mm, between Rows 5 mm**, Arrange By Rows. Centang *Preview Multiple Record Layout* untuk memastikan 2 × 2 tepat.
+8. *Create Merged Document* → Records per Document Page: **Multiple Records** → tab *Multiple Record Layout*: margin atas 27, bawah 15, kiri/dalam 18, kanan/luar 12, **Spacing between Columns 5 mm, between Rows 5 mm**, Arrange By Rows. Centang *Preview Multiple Record Layout* untuk memastikan 2 × 2 tepat.
 9. Tab *Options*: centang *Generate Overset Text Report with Document Creation* dan biarkan *Alert When Images Are Missing* tetap aktif.
 10. Simpan hasil sebagai `05-InDesign/INDD/11-Direktori-Bisnis.indd`. Periksa laporan overset; tangani judul yang meluap (perlebar area judul, bukan mengecilkan huruf di bawah 7.5 pt).
 11. Jalankan `scripts/indesign/rapikan-direktori.jsx` pada dokumen hasil merge agar kartu di halaman kiri menempel ke margin luar 12 mm dan di halaman kanan ke margin dalam 18 mm. Jalankan ulang setelah urutan halaman di Book final.
