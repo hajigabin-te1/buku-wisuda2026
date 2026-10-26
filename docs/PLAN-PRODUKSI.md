@@ -67,6 +67,10 @@ Catatan penting Data Merge:
 - Halaman terakhir yang tidak penuh (mis. 2 kartu) itu normal; isi sisa ruang dengan ornamen ringan atau biarkan bersih.
 - Bila data berubah setelah merge: perbaiki CSV → jalankan skrip ulang → merge ulang. Jangan mengedit teks hasil merge satu per satu kecuali terpaksa (dan catat perubahannya kembali ke data).
 
+## Tahap 6b — Sampul
+1. Jalankan `scripts/indesign/buat-sampul-depan.jsx` → simpan `05-InDesign/INDD/00-Sampul-Depan.indd`; masukkan foto grup resmi.
+2. Setelah jumlah halaman final, minta **lebar punggung** & template sampul ke percetakan, lalu buat file bentangan (belakang + punggung + depan) dan salin isi sampul depan ke sisi kanannya.
+
 ## Tahap 7 — Halaman editorial
 Buat file per bagian (memakai style dari template sistem):
 - `01-Depan.indd` — cover, cover slogan, kata pengantar, mars, hymne, sambutan, unsur yayasan/pimpinan/senat, visi-misi, janji, filosofi.

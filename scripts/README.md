@@ -41,6 +41,17 @@ python scripts\validasi_data.py 03-Data\Data-Bersih\bisnis.xlsx ^
 
 **Batasan:** v2 belum diuji ulang di InDesign oleh pembuat skrip (hanya cek sintaks). Bila masih gagal, kirim teks/screenshot pesan error (baris + pesan). Langkah kecil yang gagal (efek, ikon, ornamen, bahasa) tidak menghentikan skrip — dicatat di pesan akhir. Pengaturan efek (opasitas, drop shadow, gradient feather, sudut membulat) dibungkus `try` — bila gagal, dicatat di pesan akhir dan perlu diatur manual di Object Styles. Ubah angka bleed/margin di blok `CFG` setelah spesifikasi vendor diterima.
 
+## 2b. `indesign/buat-sampul-depan.jsx` — sampul depan (cover utama)
+Membuat dokumen **sampul depan A5** (148 × 210 mm, bleed 3 mm, 1 halaman) yang editable, mengikuti `01-Brief-Referensi/referensi.png` / mockup `06-Proof/konsep/01-sampul-depan.png`.
+
+**Isi:** latar gradasi biru muda (swatch `UC-Gradasi-Sampul`), pita & pecahan kaca (PDF dari `05-InDesign/Links/ornamen/`), **logo resmi** `02-Aset-Resmi/Logo/STIA.png`, “SEKOLAH TINGGI ILMU / ADMINISTRASI (STIA) AMUNTAI”, “WISUDA 2026”, judul **UNTUKMU / CINTA** (Cinzel), slogan resmi, 5 toga dekoratif, bingkai **FOTO-GRUP** (bagian bawah memudar), kabut putih, teks kaki “BUKU WISUDA / STIA AMUNTAI / TAHUN 2026” dan “KENANGAN • PERJUANGAN • HARAPAN”. Teks memakai Paragraph Styles `Sampul-*`; objek dipisah ke layer **Teks / Ornamen / Foto / Latar**.
+
+**Jalankan:** salin ke folder Scripts Panel (seperti no. 2) → klik dua kali. Bila diminta, pilih **folder proyek** (yang berisi `02-Aset-Resmi` dan `05-InDesign`). Lalu muncul dialog **opsional** untuk memilih foto grup resmi (Batal = bingkai dibiarkan kosong). Simpan sebagai `05-InDesign/INDD/00-Sampul-Depan.indd`.
+
+**Foto grup:** sebaiknya cutout (PNG/PSD/TIFF dengan latar transparan), ≥ 300 ppi pada 120 × 80 mm (≥ 1420 × 945 px). Ganti kapan saja: pilih bingkai di layer Foto → File → Place.
+
+**Batasan:** halaman depan saja. Untuk cetak, percetakan biasanya meminta **bentangan** belakang + punggung + depan — dibuat setelah lebar punggung diketahui (isi halaman ini tinggal disalin ke sisi kanan bentangan). **Status:** belum diuji di InDesign oleh pembuat skrip; lolos cek sintaks dan uji jalan dengan tiruan DOM InDesign di Node.js (menangkap salah ketik/variabel, bukan perilaku InDesign sebenarnya). Error ditampilkan dengan nomor baris.
+
 ## 3. `indesign/rapikan-direktori.jsx` — rapikan kartu setelah merge
 Margin dalam (18 mm) ≠ luar (12 mm), sedangkan Data Merge belum tentu mencerminkan posisi kartu di halaman kiri. Skrip ini menggeser semua objek halaman (bukan master) di setiap halaman agar tepi kiri kartu menempel ke margin yang benar: halaman kanan → 18 mm, halaman kiri → 12 mm. Objek di pasteboard diabaikan.
 
