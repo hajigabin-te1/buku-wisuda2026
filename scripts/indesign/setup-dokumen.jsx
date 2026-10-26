@@ -1,18 +1,20 @@
-// setup-dokumen.jsx — Buku Wisuda STIA Amuntai 2026
+// setup-dokumen.jsx - Buku Wisuda STIA Amuntai 2026
 // Membuat dokumen A5 dengan swatch, paragraph & object styles, master A-Isi,
 // B-Direktori, C-Tanpa-Nomor, dan satu kartu contoh (Varian A, gaya referensi
 // 01-Brief-Referensi/referensi.png) sebagai titik awal template Data Merge.
-// Ikon & ornamen SVG diambil dari 05-InDesign/Links/ (jaga struktur folder repo).
+// Ikon & ornamen (PDF, cadangan SVG) diambil dari 05-InDesign/Links/.
 //
 // Target  : Adobe InDesign 2020 (ExtendScript), Windows.
-// Status  : BELUM DIUJI di InDesign. Jalankan pada dokumen baru; dokumen lain tidak disentuh.
+// Status  : v2 - perbaikan setelah laporan gagal di InDesign 2020 (documents.add,
+//           pelaporan error per baris). Belum diuji ulang di InDesign oleh pembuat skrip.
+//           Skrip membuat dokumen baru; dokumen lain tidak disentuh.
 // Cara    : Window > Utilities > Scripts > klik kanan "User" > Reveal in Explorer,
 //           salin file ini ke folder tersebut, lalu klik dua kali di panel Scripts.
 // Spesifikasi angka: docs/SPEK-DESAIN.md. Bleed 3 mm & margin dikonfirmasi percetakan (perfect binding).
 
 #target indesign
 
-(function () {
+function main() {
     // ---------- Konfigurasi (ubah di sini) ----------
     var CFG = {
         lebar: 148, tinggi: 210, bleed: 3,             // spesifikasi percetakan
@@ -43,15 +45,18 @@
         try { return fn(); } catch (e) { log.push("Dilewati: " + label + " (" + e.message + ")"); }
     }
 
-    var doc = app.documents.add({
-        documentPreferences: {
-            pageWidth: CFG.lebar + "mm", pageHeight: CFG.tinggi + "mm",
-            facingPages: true, pagesPerDocument: 1,
-            documentBleedUniformSize: true, documentBleedTopOffset: CFG.bleed + "mm"
-        }
-    });
+    // InDesign 2020: argumen pertama documents.add() adalah showingWindow (boolean),
+    // jadi properti dokumen diatur SETELAH dokumen dibuat.
+    var doc = app.documents.add(true);
     doc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.MILLIMETERS;
     doc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.MILLIMETERS;
+    var dp = doc.documentPreferences;
+    dp.facingPages = true;
+    dp.pagesPerDocument = 1;
+    dp.pageWidth = CFG.lebar;
+    dp.pageHeight = CFG.tinggi;
+    dp.documentBleedUniformSize = true;
+    dp.documentBleedTopOffset = CFG.bleed;
     doc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
     doc.zeroPoint = [0, 0];
     doc.marginPreferences.properties = { top: CFG.mAtas, bottom: CFG.mBawah, left: CFG.mDalam, right: CFG.mLuar };
@@ -82,7 +87,8 @@
         coba("font style " + gaya, function () { target.fontStyle = gaya; });
     }
 
-    // ---------- Paragraph & Character Styles ----------
+    // ---------- Paragraph Styles ----------
+    var bahasaOK = true;
     function pStyle(nama, p) {
         var s = doc.paragraphStyles.itemByName(nama);
         if (!s.isValid) s = doc.paragraphStyles.add({ name: nama });
@@ -97,7 +103,10 @@
         if (p.after) s.spaceAfter = p.after;
         if (p.before) s.spaceBefore = p.before;
         if (p.indent) s.leftIndent = p.indent;
-        coba("bahasa " + nama, function () { s.appliedLanguage = "Indonesian"; });
+        if (bahasaOK) {
+            try { s.appliedLanguage = "Indonesian"; }
+            catch (e) { bahasaOK = false; log.push("Kamus bahasa Indonesia tidak tersedia; hyphenation memakai bahasa bawaan."); }
+        }
         return s;
     }
     var J = CFG.fontJudul, S = CFG.fontIsi, P = CFG.fontPuitis;
@@ -183,10 +192,17 @@
         r.fillColor = sw["UC-Primer-60"]; r.strokeColor = NONE;
         r.locked = true;
     }
+    function aset(rel) {
+        // utamakan PDF (pasti didukung InDesign 2020), cadangan SVG
+        var pdf = File(LINKS + rel + ".pdf");
+        if (pdf.exists) return pdf;
+        var svg = File(LINKS + rel + ".svg");
+        if (svg.exists) return svg;
+        throw Error("file tidak ada: " + LINKS + rel + ".pdf/.svg");
+    }
     function pasangSvg(page, file, b, balikH, balikV) {
         coba("place " + file, function () {
-            var f = File(LINKS + file);
-            if (!f.exists) throw Error("file tidak ada: " + f.fsName);
+            var f = aset(file);
             var r = page.rectangles.add({ geometricBounds: b });
             r.fillColor = NONE; r.strokeColor = NONE;
             r.place(f);
@@ -201,7 +217,7 @@
         var kiri = page.side == PageSideOptions.LEFT_HAND;
         var y2 = CFG.tinggi + CFG.bleed, y1 = y2 - ukuran;
         var b = kiri ? [y1, -CFG.bleed, y2, -CFG.bleed + ukuran] : [y1, CFG.lebar + CFG.bleed - ukuran, y2, CFG.lebar + CFG.bleed];
-        pasangSvg(page, "ornamen/ornamen-sudut.svg", b, kiri, false);
+        pasangSvg(page, "ornamen/ornamen-sudut", b, kiri, false);
     }
     function garis(page, y, x1, x2, warna, tebal, tint) {
         var g = page.graphicLines.add();
@@ -271,8 +287,7 @@
     function ikonLabel(par, nama) {
         // ikon garis (SVG) sebagai inline graphic di awal paragraf label
         coba("ikon " + nama, function () {
-            var f = File(LINKS + "ikon/ikon-" + nama + ".svg");
-            if (!f.exists) throw Error("file tidak ada: " + f.fsName);
+            var f = aset("ikon/ikon-" + nama);
             par.insertionPoints[0].contents = "\u2002";
             par.insertionPoints[0].place(f);
         });
@@ -310,4 +325,14 @@
     if (daftar.length) pesan += "Font tidak ditemukan, diganti " + CFG.cadangan + ":\n- " + daftar.join("\n- ") + "\n\n";
     if (log.length) pesan += "Catatan:\n- " + log.join("\n- ");
     alert(pesan);
-})();
+}
+
+try {
+    app.scriptPreferences.enableRedraw = false;
+    main();
+} catch (e) {
+    alert("Skrip berhenti karena error.\n\nBaris: " + e.line + "\nPesan: " + e.message +
+          "\n\nCatat/screenshot pesan ini dan kirimkan agar skrip bisa diperbaiki.");
+} finally {
+    app.scriptPreferences.enableRedraw = true;
+}

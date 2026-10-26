@@ -10,7 +10,7 @@ Legenda status: ☐ belum · ◐ berjalan · ☑ selesai
 ◐ Logo resmi STIA Amuntai → `02-Aset-Resmi/Logo/STIA.png` sudah ada (PNG 623 px: cukup sampai ±50 mm lebar pada 300 ppi; versi vektor AI/EPS/SVG/PDF tetap lebih baik bila ada).
 ☑ Referensi desain: `01-Brief-Referensi/referensi.png`.
 ☐ Foto grup/kenangan resmi → `02-Aset-Resmi/Foto-Grup/`.
-☐ Naskah resmi: Kata Pengantar, Mars, Hymne, Sambutan Ketua, Visi-Misi (STIA, Prodi Bisnis, Prodi Publik), Janji Wisudawan, Filosofi.
+☐ Naskah resmi: Kata Pengantar, Mars, Hymne, Sambutan Ketua STIA, Sambutan Ketua Yayasan (+ foto resmi), Visi-Misi (STIA, Prodi Bisnis, Prodi Publik), Janji Wisudawan, Filosofi.
 ☐ Daftar nama dan jabatan: Yayasan Bakti Muslimin, Pimpinan, Senat (beserta foto bila ada).
 ☐ Data wisudawan per prodi (Excel) → `03-Data/Sumber-Asli/` (**jangan diedit**).
 ☐ Font terpasang di komputer produksi (Montserrat, Source Sans 3, Playfair Display — atau pengganti yang disetujui).
@@ -44,7 +44,7 @@ Skrip melaporkan field kosong, NIM duplikat, nama ganda, IPK tidak wajar, foto h
 Mockup di `06-Proof/konsep/` (data DUMMY, logo/foto berupa placeholder). Pilih:
 - ☑ Varian kartu direktori: **A** (dipilih Okt 2026).
 - ◐ Arah visual mengikuti `01-Brief-Referensi/referensi.png` — mockup v3 di `06-Proof/konsep/` menunggu persetujuan.
-- ☐ Putuskan halaman dari referensi yang belum ada di brief: Daftar Isi, Profil Wisudawan (1 orang/halaman), Sambutan Ketua Yayasan.
+- ☑ Halaman tambahan dari referensi: Sambutan Ketua Yayasan Bakti Muslimin dipakai; Profil Wisudawan per halaman dan Daftar Isi tidak dipakai.
 Setelah disetujui, desain dibangun ulang di InDesign sebagai objek editable.
 
 ## Tahap 6 — Template direktori + Data Merge (per prodi)

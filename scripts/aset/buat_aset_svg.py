@@ -4,11 +4,13 @@
 Gaya mengikuti 01-Brief-Referensi/referensi.png: pecahan kaca diagonal biru-emas
 di sudut halaman, garis sapuan emas di bawah tulisan script, ikon garis untuk
 kartu direktori, dan siluet toga untuk sampul.
-Keluaran: 05-InDesign/Links/ornamen/*.svg dan 05-InDesign/Links/ikon/*.svg
-(dipakai mockup dan dapat di-place ke InDesign 2020 — File > Place, SVG).
+Keluaran: 05-InDesign/Links/ornamen/*.svg|pdf dan 05-InDesign/Links/ikon/*.svg|pdf.
+SVG dipakai mockup; PDF (vektor, dibuat lewat Chromium/Playwright bila tersedia)
+dipakai skrip InDesign karena place PDF pasti didukung InDesign 2020.
 Jalankan dari root repo: python scripts/aset/buat_aset_svg.py
 """
 
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -97,7 +99,40 @@ def main():
     (ORN / "toga.svg").write_text(toga(), encoding="utf-8")
     for nama, isi in IKON_PATH.items():
         (IKON / f"ikon-{nama}.svg").write_text(ikon(isi), encoding="utf-8")
-    print("Aset ditulis ke", ORN, "dan", IKON)
+    print("SVG ditulis ke", ORN, "dan", IKON)
+    ke_pdf(sorted(ORN.glob("*.svg")) + sorted(IKON.glob("*.svg")))
+
+
+JS_PDF = r"""
+const { chromium } = require('playwright');
+const fs = require('fs');
+(async () => {
+  const files = process.argv.slice(2);
+  const b = await chromium.launch();
+  const p = await b.newPage();
+  for (const f of files) {
+    const svg = fs.readFileSync(f, 'utf8');
+    const w = svg.match(/width="([\d.]+)mm"/)[1], h = svg.match(/height="([\d.]+)mm"/)[1];
+    await p.setContent(`<html><body style="margin:0">${svg}</body></html>`);
+    await p.pdf({ path: f.replace(/\.svg$/, '.pdf'), width: w + 'mm', height: h + 'mm',
+                  printBackground: false, pageRanges: '1', margin: { top: 0, right: 0, bottom: 0, left: 0 } });
+  }
+  await b.close();
+})();
+"""
+
+
+def ke_pdf(files):
+    """Konversi SVG -> PDF vektor berukuran sama (opsional; butuh Node.js + playwright)."""
+    js = ROOT / "scripts/aset/_svg2pdf.js"
+    js.write_text(JS_PDF, encoding="utf-8")
+    try:
+        subprocess.run(["node", str(js), *map(str, files)], check=True)
+        print("PDF ditulis untuk", len(files), "aset.")
+    except (OSError, subprocess.CalledProcessError) as err:
+        print("PDF tidak dibuat (Node.js/playwright tidak tersedia?):", err)
+    finally:
+        js.unlink()
 
 
 if __name__ == "__main__":

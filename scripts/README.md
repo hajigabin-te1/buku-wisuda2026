@@ -37,7 +37,9 @@ python scripts\validasi_data.py 03-Data\Data-Bersih\bisnis.xlsx ^
 
 **Hasil:** A5 facing pages + bleed 3 mm, margin atas 12 / bawah 15 / dalam 18 / luar 12 (spesifikasi percetakan); swatch UC-*; paragraph styles Bagian-Judul, Bagian-Sub, Sampul-Judul, Script-Tema, H1-Bab, H2-Subjudul, Isi, Puitis, Lirik, Dir-*, Folio; object styles Kaca-Kartu, Chip-Emas, Foto-Bingkai, Teks-Kartu; master A-Isi, B-Direktori (judul bagian gaya referensi), C-Tanpa-Nomor dengan ornamen sudut SVG; halaman 1 (halaman kanan) berisi satu kartu contoh 56.5 × 81 mm gaya referensi (ikon SVG inline di label) dengan teks penanda `«Nama»` dsb., plus catatan non-cetak di pasteboard (hapus sebelum merge).
 
-**Batasan:** BELUM DIUJI di InDesign (hanya cek sintaks JavaScript). Penempatan SVG (ornamen & ikon) memerlukan dukungan impor SVG di InDesign 2020; bila gagal, dicatat di pesan akhir — ikon/ornamen lalu dipasang manual, atau SVG dikonversi ke PDF/AI terlebih dulu. Pengaturan efek (opasitas, drop shadow, gradient feather, sudut membulat) dibungkus `try` — bila gagal, dicatat di pesan akhir dan perlu diatur manual di Object Styles. Ubah angka bleed/margin di blok `CFG` setelah spesifikasi vendor diterima.
+**Riwayat:** v1 gagal di InDesign 2020 — penyebab: `app.documents.add({...})` (argumen pertama harus boolean `showingWindow`). v2: dokumen dibuat dulu lalu properti diatur; seluruh skrip dibungkus `try/catch` yang menampilkan **nomor baris + pesan error**; file murni ASCII; ikon/ornamen dipasang dari **PDF** (cadangan SVG).
+
+**Batasan:** v2 belum diuji ulang di InDesign oleh pembuat skrip (hanya cek sintaks). Bila masih gagal, kirim teks/screenshot pesan error (baris + pesan). Langkah kecil yang gagal (efek, ikon, ornamen, bahasa) tidak menghentikan skrip — dicatat di pesan akhir. Pengaturan efek (opasitas, drop shadow, gradient feather, sudut membulat) dibungkus `try` — bila gagal, dicatat di pesan akhir dan perlu diatur manual di Object Styles. Ubah angka bleed/margin di blok `CFG` setelah spesifikasi vendor diterima.
 
 ## 3. `indesign/rapikan-direktori.jsx` — rapikan kartu setelah merge
 Margin dalam (18 mm) ≠ luar (12 mm), sedangkan Data Merge belum tentu mencerminkan posisi kartu di halaman kiri. Skrip ini menggeser semua objek halaman (bukan master) di setiap halaman agar tepi kiri kartu menempel ke margin yang benar: halaman kanan → 18 mm, halaman kiri → 12 mm. Objek di pasteboard diabaikan.
@@ -49,9 +51,9 @@ Margin dalam (18 mm) ≠ luar (12 mm), sedangkan Data Merge belum tentu mencermi
 **Batasan:** BELUM DIUJI di InDesign (hanya cek sintaks).
 
 ## 4. `aset/buat_aset_svg.py` — ornamen & ikon (aset desain, bukan aset resmi)
-Membuat `05-InDesign/Links/ornamen/` (ornamen-sudut, ornamen-tepi, sapuan-emas, toga) dan `05-InDesign/Links/ikon/` (nim, nama, ttl, ipk, predikat, judul) mengikuti gaya `01-Brief-Referensi/referensi.png` dan palet resmi. **Jalankan:** `python scripts/aset/buat_aset_svg.py`. **Status:** SVG tervalidasi dirender Chromium di mockup; belum diuji place di InDesign.
+Membuat `05-InDesign/Links/ornamen/` (ornamen-sudut, ornamen-tepi, sapuan-emas, toga) dan `05-InDesign/Links/ikon/` (nim, nama, ttl, ipk, predikat, judul) dalam **SVG dan PDF vektor** (latar transparan) mengikuti gaya `01-Brief-Referensi/referensi.png` dan palet resmi. PDF dibuat lewat Chromium/Playwright (opsional). **Jalankan:** `python scripts/aset/buat_aset_svg.py`. **Status:** SVG dirender di mockup; PDF dicek dengan pdftoppm (vektor, transparan); belum diuji place di InDesign.
 
 ## 5. `mockup/buat_mockup.py` — mockup konsep
 **Prasyarat:** Python 3 + Pillow, Node.js + `playwright` (Chromium), internet untuk Google Fonts.
-**Jalankan:** `python scripts/mockup/buat_mockup.py` → 14 PNG (konsep v3, gaya referensi), `00-ringkasan.png`, dan `KONSEP-Buku-Wisuda-2026.pdf` di `06-Proof/konsep/`. Memakai logo resmi `02-Aset-Resmi/Logo/STIA.png` dan aset dari skrip no. 4. Margin mengikuti spesifikasi percetakan; sisi jilid ditandai merah.
+**Jalankan:** `python scripts/mockup/buat_mockup.py` → 15 PNG (konsep v3, gaya referensi; termasuk Sambutan Ketua Yayasan & Unsur Yayasan), `00-ringkasan.png`, dan `KONSEP-Buku-Wisuda-2026.pdf` di `06-Proof/konsep/`. Memakai logo resmi `02-Aset-Resmi/Logo/STIA.png` dan aset dari skrip no. 4. Margin mengikuti spesifikasi percetakan; sisi jilid ditandai merah.
 **Batasan:** hanya acuan visual dari data DUMMY dan placeholder; bukan file cetak dan bukan file InDesign.

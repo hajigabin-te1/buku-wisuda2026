@@ -22,6 +22,7 @@ Gunakan bahasa Indonesia yang jelas dan profesional, serta puitis bila konteksny
 - Lagu Mars STIA
 - Lagu Hymne STIA
 - Kata sambutan ketua STIA Amuntai
+- Kata sambutan Ketua Yayasan Bakti Muslimin (ditambahkan Okt 2026)
 - Unsur Yayasan Bakti Muslimin
 - Unsur Pimpinan STIA Amuntai
 - Unsur Senat STIA Amuntai

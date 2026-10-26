@@ -8,6 +8,7 @@ berikon dengan nomor emas di pojok foto.
 
 Membuat HTML berukuran A5 dari data DUMMY dan placeholder, lalu merendernya ke
 PNG, satu PDF gabungan, dan satu lembar ringkasan di 06-Proof/konsep/.
+Susunan halaman mengikuti AGENT.md (termasuk Sambutan Ketua Yayasan).
 Prasyarat: Python 3, Pillow, Node.js dengan paket `playwright`, akses internet
 (Google Fonts), dan aset dari scripts/aset/buat_aset_svg.py.
 Jalankan dari root repo: python scripts/mockup/buat_mockup.py
@@ -233,36 +234,19 @@ def pembuka():
 
 
 # ---------- editorial ----------
-def daftar_isi():
-    ml, mr = kiri_kanan("L")
-    item = ["Kata Pengantar", "Mars & Hymne STIA", "Sambutan Ketua STIA Amuntai", "Unsur Yayasan, Pimpinan & Senat",
-            "Visi & Misi", "Janji Wisudawan & Filosofi", "Daftar Wisudawan Administrasi Bisnis",
-            "Daftar Wisudawan Administrasi Publik", "Foto Kenangan", "Penutup"]
-    rows = "".join(f'''<div style="display:flex;align-items:center;gap:3mm;padding:2.1mm 0;border-bottom:.15mm solid rgba(48,129,219,.25)">
-  <div style="width:4.6mm;height:4.6mm;border-radius:50%;background:var(--a);font:700 6.5pt/4.6mm Montserrat;text-align:center">{i}</div>
-  <div style="flex:1;font:500 8pt Montserrat">{t}</div><div style="font:600 7.5pt Montserrat;color:var(--s)">…</div></div>'''
-                   for i, t in enumerate(item, 1))
-    isi = judul_bagian("L", "Daftar Isi", "Wisuda 2026", top=24) + f'''
-<div class="abs" style="top:46mm;left:{ml}mm;right:{mr}mm">{rows}</div>
-<div class="abs script" style="top:166mm;left:{ml + 4}mm;font-size:24pt;transform:rotate(-8deg)">Untukmu Cinta</div>
-{sapuan(176, ml + 4, 46, -8)}
-<div class="catatan" style="top:4mm;left:4mm">OPSIONAL — ada di referensi, belum ada di daftar isi brief</div>'''
-    return halaman("L", isi, folio="i")
-
-
-def sambutan():
-    ml, mr = kiri_kanan("R")
+def sambutan(sisi, sub, jabatan, folio, label_foto):
+    ml, mr = kiri_kanan(sisi)
     lebar = W - ml - mr
-    isi = judul_bagian("R", "Sambutan", "Ketua STIA Amuntai", top=24) + f'''
+    isi = judul_bagian(sisi, "Sambutan", sub, top=24) + f'''
 <div class="abs" style="top:47mm;left:{ml}mm;width:38mm;height:48mm;border-radius:3mm;border:.6mm solid var(--a);transform:translate(1.5mm,1.5mm)"></div>
-<div class="glass abs" style="top:47mm;left:{ml}mm;width:38mm;height:48mm;border-radius:3mm;padding:2mm">{foto(2, 2, 34, 44, "FOTO RESMI KETUA")}</div>
+<div class="glass abs" style="top:47mm;left:{ml}mm;width:38mm;height:48mm;border-radius:3mm;padding:2mm">{foto(2, 2, 34, 44, label_foto)}</div>
 <div class="abs" style="top:44mm;left:{ml + 45}mm;font:700 30pt Montserrat;color:var(--a)">“</div>
 <div class="abs" style="top:58mm;left:{ml + 45}mm;width:{lebar - 45}mm">{NASKAH}<div style="height:3mm"></div>{bars([96, 100, 88, 94, 60])}</div>
 <div class="abs" style="top:104mm;left:{ml}mm;width:{lebar}mm">{bars([100, 97, 99, 94, 100, 62])}<div style="height:2mm"></div>{bars([98, 100, 95, 71])}</div>
 <div class="abs" style="top:160mm;left:{ml}mm">
   <div style="font:700 7.5pt Montserrat;color:var(--ink)">[Nama &amp; gelar resmi]</div>
-  <div style="font:400 7pt 'Source Sans 3';color:var(--s)">Ketua STIA Amuntai</div></div>'''
-    return halaman("R", isi, folio=3, sudut=(("b", 44), ("t", 34, .8)))
+  <div style="font:400 7pt 'Source Sans 3';color:var(--s)">{jabatan}</div></div>'''
+    return halaman(sisi, isi, folio=folio, sudut=(("b", 44), ("t", 34, .8)))
 
 
 def kata_pengantar():
@@ -288,10 +272,10 @@ def mars():
 <div class="glass abs" style="top:56mm;left:{ml + 6}mm;width:{lebar - 12}mm;height:112mm;border-radius:4mm;padding:10mm">
   {bait([70, 78, 66, 74])}{bait([80, 64, 76, 70])}<div style="text-align:center;font:600 6pt 'Source Sans 3';color:var(--s);margin-bottom:3mm">Reff.</div>{bait([72, 82, 68, 60])}</div>
 <div class="catatan" style="top:185mm;left:{ml}mm">Hymne STIA memakai tata letak yang sama di halaman berikutnya.</div>'''
-    return halaman("L", isi, folio=4, sudut=(("b", 44),))
+    return halaman("L", isi, folio=6, sudut=(("b", 44),))
 
 
-def pimpinan():
+def pimpinan(judul, sub, folio, catatan):
     ml, mr = kiri_kanan("R")
     lebar = W - ml - mr
     cw, gap = (lebar - 2 * 5) / 3, 5
@@ -304,9 +288,9 @@ def pimpinan():
   <div class="abs" style="top:30.5mm;left:2mm;right:2mm;text-align:center">
     <div style="font:700 6.3pt/8pt Montserrat">[Nama &amp; gelar]</div>
     <div style="font:400 6pt/7.5pt 'Source Sans 3';color:var(--s)">[Jabatan]</div></div></div>'''
-    isi = judul_bagian("R", "Unsur Pimpinan", "STIA Amuntai", top=24) + kartu_p + \
-        f'<div class="catatan" style="top:189mm;left:{ml}mm">Pola sama untuk Yayasan Bakti Muslimin &amp; Senat; jumlah kartu mengikuti data resmi.</div>'
-    return halaman("R", isi, folio=7, sudut=(("b", 40, .9),))
+    isi = judul_bagian("R", judul, sub, top=24) + kartu_p + \
+        f'<div class="catatan" style="top:189mm;left:{ml}mm">{catatan}</div>'
+    return halaman("R", isi, folio=folio, sudut=(("b", 40, .9),))
 
 
 def visi_misi():
@@ -321,7 +305,7 @@ def visi_misi():
   <div style="font:600 6pt 'Source Sans 3';color:var(--s);letter-spacing:.4mm;margin-bottom:4mm">VISI</div>{bars([88, 94, 70], center=True)}</div>
 <div class="abs" style="top:101mm;left:{ml}mm;width:{lebar}mm">
   <div style="font:600 6pt 'Source Sans 3';color:var(--s);letter-spacing:.4mm;margin-bottom:4mm">MISI</div>{misi}</div>'''
-    return halaman("L", isi, folio=10, sudut=(("b", 44),))
+    return halaman("L", isi, folio=14, sudut=(("b", 44),))
 
 
 def pembatas():
@@ -378,19 +362,23 @@ def main():
         "01-sampul-depan": sampul_depan(),
         "02-sampul-belakang": sampul_belakang(),
         "03-pembuka-slogan": pembuka(),
-        "04-daftar-isi-opsional": daftar_isi(),
-        "05-kata-pengantar": kata_pengantar(),
-        "06-sambutan-ketua": sambutan(),
-        "07-mars": mars(),
-        "08-unsur-pimpinan": pimpinan(),
-        "09-visi-misi": visi_misi(),
-        "10-pembatas-direktori": pembatas(),
-        "11-direktori-kanan": direktori([rows[0], rows[1], rows[2], rows[4]], "R", prodi, 17,
+        "04-kata-pengantar": kata_pengantar(),
+        "05-mars": mars(),
+        "06-sambutan-ketua-stia": sambutan("R", "Ketua STIA Amuntai", "Ketua STIA Amuntai", 7, "FOTO RESMI KETUA STIA"),
+        "07-sambutan-ketua-yayasan": sambutan("L", "Ketua Yayasan Bakti Muslimin", "Ketua Yayasan Bakti Muslimin", 8,
+                                              "FOTO RESMI KETUA YAYASAN"),
+        "08-unsur-yayasan": pimpinan("Unsur Yayasan", "Yayasan Bakti Muslimin", 9,
+                                     "Daftar pengurus yayasan; jumlah kartu mengikuti data resmi."),
+        "09-unsur-pimpinan": pimpinan("Unsur Pimpinan", "STIA Amuntai", 11,
+                                      "Pola sama untuk Unsur Senat; jumlah kartu mengikuti data resmi."),
+        "10-visi-misi": visi_misi(),
+        "11-pembatas-direktori": pembatas(),
+        "12-direktori-kanan": direktori([rows[0], rows[1], rows[2], rows[4]], "R", prodi, 17,
                                         "HALAMAN KANAN — jilid di kiri (18 mm)"),
-        "12-direktori-kiri": direktori([rows[3], rows[5], rows[1], rows[0]], "L", prodi, 18,
+        "13-direktori-kiri": direktori([rows[3], rows[5], rows[1], rows[0]], "L", prodi, 18,
                                        "HALAMAN KIRI — jilid di kanan (18 mm)"),
-        "13-foto-kenangan": kenangan(),
-        "14-penutup": penutup(),
+        "14-foto-kenangan": kenangan(),
+        "15-penutup": penutup(),
     }
     OUT.mkdir(parents=True, exist_ok=True)
     src = OUT / "src"

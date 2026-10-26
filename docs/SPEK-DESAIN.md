@@ -14,7 +14,7 @@ Yang **tidak** diambil dari referensi (belum dikonfirmasi / bertentangan dengan 
 - Teks “Sebuah perjalanan, sebuah perjuangan, sebuah masa depan.”, “Bersama Menuju Masa Depan Yang Lebih Baik”, puisi di halaman pembuka, kutipan sambutan, dan nama pejabat/wisudawan di referensi — semuanya contoh; diganti slogan resmi atau placeholder.
 - Nomor halaman di pojok (referensi) → tetap **tengah footer** sesuai brief.
 - “Daftar Mahasiswa” → memakai istilah brief “Daftar Wisudawan”.
-- Halaman **Profil Wisudawan 1 orang/halaman**, **Daftar Isi**, dan **Sambutan Ketua Yayasan** ada di referensi tetapi tidak ada di daftar isi brief → menunggu keputusan pemilik proyek (Daftar Isi dibuat sebagai mockup opsional).
+- Keputusan pemilik proyek (Okt 2026) atas halaman tambahan di referensi: **Sambutan Ketua Yayasan Bakti Muslimin — DIPAKAI** (setelah Sambutan Ketua STIA; Unsur Yayasan/daftar pengurus tetap ada); **Profil Wisudawan 1 orang/halaman — TIDAK**; **Daftar Isi — tidak dipakai** (tidak termasuk yang dipilih).
 - Foto gedung kampus: hanya bila foto resmi tersedia (AGENT.md melarang foto kampus sembarangan).
 
 ## 1. Format (dikonfirmasi percetakan)
