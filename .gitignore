@@ -1,0 +1,21 @@
+# OS/temp
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.bak
+*.log
+*.swp
+~$*
+*.zip
+
+# InDesign locks
+*.idlk
+
+# Student data and photos: keep local by default
+03-Data/Sumber-Asli/*
+04-Foto-Wisudawan/*
+02-Aset-Resmi/Foto-Grup/*
+!03-Data/Sumber-Asli/.gitkeep
+!04-Foto-Wisudawan/.gitkeep
+!02-Aset-Resmi/Foto-Grup/.gitkeep
