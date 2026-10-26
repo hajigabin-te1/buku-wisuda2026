@@ -38,9 +38,10 @@ Gunakan bahasa Indonesia yang jelas dan profesional, serta puitis bila konteksny
 
 ##Arah desain dan Pallete
 - Aku memakai rules 60-30-10
-- Untuk warna primary 60% warnanya : #C7EAFC (Andrea)
-- Untuk secondary 30% warnanya : #2E94FF (Brilliant Azure)
-- Untuk aksen 10% warnaya : #FCD700 (Gold)
+- Untuk warna primary 60% warnanya : #EBF8FF (Biru Es)
+- Untuk secondary 30% warnanya : #3081DB (Biru Utama)
+- Untuk aksen 10% warnaya : #FFE031 (Emas)
+- Catatan revisi (Okt 2026): palet di atas mengikuti instruksi terbaru pemilik proyek dan `README.md`. Palet lama (#C7EAFC / #2E94FF / #FCD700) tidak dipakai lagi.
 - Arah style desain : Editorial, Futuristic dan ada sentuhan Glassmorphism
 - Ukuran kertas A5
 - Memuat tema Utama "Untukmu Cinta" dan 2026
