@@ -5,7 +5,8 @@ Dokumen kerja dari persiapan data sampai PDF siap cetak. Spesifikasi visual ada 
 Legenda status: ☐ belum · ◐ berjalan · ☑ selesai
 
 ## Tahap 0 — Konfirmasi dan pengumpulan bahan
-☐ Spesifikasi percetakan: bleed, margin jilid, jenis jilid (kawat/lem), kelipatan halaman, jenis kertas, format PDF (PDF/X-1a atau X-4), profil warna, halaman tunggal atau spread, crop marks.
+☑ Spesifikasi percetakan: A5, bleed 3 mm, margin 12/15/18/12, jilid lem panas (perfect binding), format PDF.
+☐ Masih ditanyakan ke percetakan: PDF/X-1a atau X-4 dan profil warna; crop marks ya/tidak; halaman tunggal atau spread; kelipatan jumlah halaman; jenis kertas isi & sampul; **lebar punggung (spine)** setelah jumlah halaman final; format file sampul (bentangan depan–punggung–belakang).
 ☐ Logo resmi STIA Amuntai (vektor: AI/EPS/SVG/PDF) → `02-Aset-Resmi/Logo/`.
 ☐ Foto grup/kenangan resmi → `02-Aset-Resmi/Foto-Grup/`.
 ☐ Naskah resmi: Kata Pengantar, Mars, Hymne, Sambutan Ketua, Visi-Misi (STIA, Prodi Bisnis, Prodi Publik), Janji Wisudawan, Filosofi.
@@ -40,24 +41,24 @@ Skrip melaporkan field kosong, NIM duplikat, nama ganda, IPK tidak wajar, foto h
 
 ## Tahap 5 — Konsep visual (persetujuan)
 Mockup di `06-Proof/konsep/` (data DUMMY, logo/foto berupa placeholder). Pilih:
-- Varian kartu direktori A atau B.
-- Arah cover & halaman editorial.
+- ☑ Varian kartu direktori: **A** (dipilih Okt 2026).
+- ◐ Arah cover (opsi 1 foto grup / opsi 2 tipografis) & halaman editorial — mockup v2 di `06-Proof/konsep/`.
 Setelah disetujui, desain dibangun ulang di InDesign sebagai objek editable.
 
 ## Tahap 6 — Template direktori + Data Merge (per prodi)
 Lakukan sekali untuk Administrasi Bisnis, lalu ulangi untuk Administrasi Publik.
 
-1. Buka `00-TEMPLATE-Sistem.indd`, *Save As* `05-InDesign/INDD/10-Direktori-Bisnis-TEMPLATE.indd`. Pastikan hanya ada **satu halaman** dengan master `B-Direktori` (halaman 1 hasil skrip sudah berisi kartu contoh). Cek Layout → Margins and Columns: atas 26 mm, bawah 15 mm, kiri = kanan 13.5 mm.
-   Margin direktori sengaja simetris, sehingga hasil merge tetap benar baik dokumen facing pages maupun tidak. Bila *Preview Multiple Record Layout* terlihat janggal di facing pages, matikan facing pages pada template (File → Document Setup) — posisi kartu tidak berubah.
+1. Buka `00-TEMPLATE-Sistem.indd`, *Save As* `05-InDesign/INDD/10-Direktori-Bisnis-TEMPLATE.indd`. Pastikan hanya ada **satu halaman** dengan master `B-Direktori` (halaman 1 hasil skrip sudah berisi kartu contoh). Cek Layout → Margins and Columns: atas 26 mm, bawah 15 mm, dalam 18 mm, luar 12 mm. **Hapus catatan non-cetak di pasteboard** agar tidak ikut diduplikasi.
 2. Di master `B-Direktori`, ketik nama prodi di pita header (mis. “Wisudawan Program Studi Administrasi Bisnis”).
 3. Di halaman (bukan master) hanya boleh ada **satu kartu** di pojok kiri-atas area margin (sudah dibuat skrip: latar kaca, chip No, frame foto, frame info, chip IPK, frame judul). Sesuaikan desainnya dengan konsep yang disetujui; jangan meng-group frame foto ke dalam group bertingkat.
 4. **Window → Utilities → Data Merge** → menu panel → *Select Data Source* → pilih file `.txt` UTF-16 hasil skrip (centang *Show Import Options*: Delimiter **Tab**, Encoding **Unicode**).
 5. Seleksi teks contoh `«Nama»` dan seterusnya, lalu klik nama field di panel untuk menggantinya dengan field asli `<<No>>`, `<<Nama>>`, `<<NIM>>`, `<<TTL>>`, `<<IPK>>`, `<<Predikat>>`, `<<Judul>>`. Pilih frame foto lalu klik field `Foto`.
 6. Panel Data Merge → *Content Placement Options*: Fitting **Fill Frames Proportionally**, centang **Center in Frame**, centang *Link Images*, centang *Remove Blank Lines for Empty Fields*.
 7. Centang **Preview** di panel; periksa beberapa record, termasuk record dengan judul terpanjang (lihat laporan skrip).
-8. *Create Merged Document* → Records per Document Page: **Multiple Records** → tab *Multiple Record Layout*: Margin sesuai template, **Spacing between Columns 5 mm, between Rows 5 mm**, Arrange By Rows. Centang *Preview Multiple Record Layout* untuk memastikan 2 × 2 tepat.
+8. *Create Merged Document* → Records per Document Page: **Multiple Records** → tab *Multiple Record Layout*: margin atas 26, bawah 15, kiri/dalam 18, kanan/luar 12, **Spacing between Columns 5 mm, between Rows 5 mm**, Arrange By Rows. Centang *Preview Multiple Record Layout* untuk memastikan 2 × 2 tepat.
 9. Tab *Options*: centang *Generate Overset Text Report with Document Creation* dan biarkan *Alert When Images Are Missing* tetap aktif.
 10. Simpan hasil sebagai `05-InDesign/INDD/11-Direktori-Bisnis.indd`. Periksa laporan overset; tangani judul yang meluap (perlebar area judul, bukan mengecilkan huruf di bawah 7.5 pt).
+11. Jalankan `scripts/indesign/rapikan-direktori.jsx` pada dokumen hasil merge agar kartu di halaman kiri menempel ke margin luar 12 mm dan di halaman kanan ke margin dalam 18 mm. Jalankan ulang setelah urutan halaman di Book final.
 
 Catatan penting Data Merge:
 - Pada mode Multiple Records, **semua objek di halaman diduplikasi per record**, sedangkan objek di **master tidak**. Karena itu pita header dan nomor halaman wajib di master.
@@ -89,7 +90,8 @@ Buat file per bagian (memakai style dari template sistem):
 ☐ Bleed terisi pada objek yang menyentuh tepi; teks penting di dalam margin.
 ☐ Nomor halaman benar, cover tanpa nomor.
 ☐ Window → Output → Separations Preview / Flattener Preview untuk efek transparansi.
-☐ Ekspor dengan preset dari vendor (PDF/X-1a atau X-4, profil warna, bleed, crop marks sesuai permintaan) → `07-Final-Cetak/`.
+☐ Ekspor isi sebagai **halaman tunggal** dengan bleed 3 mm (ukuran 154 × 216 mm), standar PDF/X & profil warna sesuai jawaban percetakan → `07-Final-Cetak/`.
+☐ Sampul diekspor terpisah sesuai template bentangan (depan + punggung + belakang) dari percetakan.
 ☐ Cetak uji (dummy fisik) minimal beberapa halaman direktori & cover sebelum cetak massal.
 
 ## Tahap 11 — Arsip

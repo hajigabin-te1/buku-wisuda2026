@@ -1,20 +1,27 @@
 # Spesifikasi Desain — Buku Wisuda STIA Amuntai 2026
 
-Status: **usulan v0.1 (konsep)**. Angka bleed, margin jilid, dan profil warna masih **menunggu konfirmasi percetakan**. Ubah dokumen ini setelah spesifikasi vendor diterima.
+Status: **v0.2** — spesifikasi percetakan sudah dikonfirmasi pemilik proyek (Okt 2026). Kartu direktori: **Varian A** (final). Profil warna & standar PDF/X masih perlu ditanyakan ke percetakan.
 
-## 1. Format
+## 1. Format (dikonfirmasi percetakan)
 | Item | Nilai | Status |
 |---|---|---|
 | Ukuran jadi | A5 portrait, 148 × 210 mm | Final |
-| Facing pages | Ya (halaman kiri/kanan) | Usulan |
-| Bleed | 3 mm semua sisi | **Konfirmasi vendor** |
-| Margin atas | 12 mm | Usulan |
-| Margin bawah | 15 mm (ruang nomor halaman) | Usulan |
-| Margin dalam (jilid) | 15 mm | **Konfirmasi vendor** — jilid lem/perfect binding biasanya butuh lebih lebar daripada jilid kawat |
-| Margin luar | 12 mm | Usulan |
-| Area aman (live area) | 121 × 183 mm | Turunan dari margin di atas |
-| Margin halaman direktori | atas 26, bawah 15, **dalam = luar = 13.5 mm** | Usulan — dibuat simetris agar posisi kartu sama di halaman kiri/kanan dan aman untuk Data Merge |
-| Jumlah halaman | Kelipatan 4 (atau sesuai vendor) | **Konfirmasi vendor** |
+| Ukuran dengan bleed | 154 × 216 mm | Final |
+| Bleed | 3 mm (atas, bawah, dalam, luar) | Final |
+| Margin atas | 12 mm | Final |
+| Margin bawah | 15 mm (ruang nomor halaman) | Final |
+| Margin dalam (sisi jilid) | **18 mm** | Final |
+| Margin luar | 12 mm | Final |
+| Area aman (live area) | 118 × 183 mm | Turunan |
+| Jilid | **Lem panas (perfect binding)** | Final |
+| Format serah | PDF | Final — standar PDF/X & profil warna: **tanyakan ke percetakan** |
+| Facing pages | Ya; margin dalam/luar bergantian di halaman kiri/kanan | Final |
+
+Konsekuensi perfect binding:
+- **Sampul (depan + punggung + belakang) biasanya dicetak terpisah** sebagai satu bentangan. Lebar punggung (*spine*) bergantung pada jumlah halaman & jenis kertas isi — **minta angkanya ke percetakan** setelah jumlah halaman final. Sampai saat itu cover didesain per halaman A5.
+- Jangan menaruh teks/wajah penting melintasi lipatan tengah spread; area 18 mm di sisi jilid sebagian “tertelan” lem.
+- Isi diekspor sebagai **halaman tunggal** (bukan spread) dengan bleed 3 mm, kecuali percetakan meminta lain.
+- Jumlah halaman isi umumnya genap; tanyakan apakah percetakan butuh kelipatan tertentu (mis. 4/8/16).
 
 ## 2. Palet warna (60-30-10)
 | Swatch InDesign | Hex | RGB | Peran |
@@ -51,7 +58,7 @@ Ukuran dalam pt; leading dalam kurung.
 | `Lirik` | Source Sans 3 Regular | 10 (15) | UC-Tinta | Mars & Hymne, rata tengah |
 | `Dir-Header` | Montserrat Bold, kapital, tracking 50 | 9 (11) | Putih | Pita header direktori (nama prodi) |
 | `Dir-No` | Montserrat Bold | 7 (8) | UC-Tinta | Nomor urut di chip emas |
-| `Dir-Nama` | Montserrat SemiBold | 8.5 (10) | UC-Tinta | Nama wisudawan (maks. 3 baris) |
+| `Dir-Nama` | Montserrat SemiBold | 8.5 (10) | UC-Tinta | Nama wisudawan (maks. 4 baris) |
 | `Dir-Label` | Source Sans 3 Semibold, kapital, tracking 40 | 5.5 (7) | UC-Sekunder-30 | Label “JUDUL SKRIPSI” |
 | `Dir-Label-Inline` (character style) | Source Sans 3 Semibold, kapital | 5.5 | UC-Sekunder-30 | Label NIM/TTL sebaris dengan datanya |
 | `Dir-Data` | Source Sans 3 Regular | 7.5 (9) | UC-Tinta | NIM, TTL |
@@ -72,46 +79,45 @@ Nomor halaman memakai *Current Page Number* (Type → Insert Special Character �
 
 ## 6. Grid halaman direktori (2 × 2)
 ```
-A5 148 × 210 mm, margin direktori: samping 13.5 (simetris) / atas 26 / bawah 15
-┌──────────────────────────────────────────┐
-│  ▓▓▓ Pita header prodi (tinggi 10 mm) ▓▓▓  │  ← di Master B, mulai y = 12
-│                                          │
-│  ┌─ Kartu 1 ─────┐ 5 ┌─ Kartu 2 ─────┐   │  ← kartu mulai y = 26
-│  │ 58 × 82 mm    │   │               │   │
-│  └───────────────┘   └───────────────┘   │
-│           5 mm jarak baris               │
-│  ┌─ Kartu 3 ─────┐   ┌─ Kartu 4 ─────┐   │
-│  └───────────────┘   └───────────────┘   │  ← berakhir y = 195
-│                  — 12 —                  │  ← folio, tengah footer
-└──────────────────────────────────────────┘
+A5 148 × 210 mm — halaman KANAN (jilid di kiri). Halaman kiri = cermin.
+┌────────────────────────────────────────────┐
+│ 18 ▓▓▓ Pita header prodi (tinggi 10 mm) ▓▓▓ 12│  ← di Master B, y = 12–22
+│                                            │
+│    ┌─ Kartu 1 ────┐ 5 ┌─ Kartu 2 ────┐     │  ← kartu mulai y = 26
+│    │ 56.5 × 82 mm │   │              │     │
+│    └──────────────┘   └──────────────┘     │
+│              5 mm jarak baris              │
+│    ┌─ Kartu 3 ────┐   ┌─ Kartu 4 ────┐     │
+│    └──────────────┘   └──────────────┘     │  ← berakhir y = 195
+│                   — 17 —                   │  ← folio, tengah footer
+└────────────────────────────────────────────┘
 ```
-- Lebar kartu: (121 − 5) / 2 = **58 mm**. Tinggi kartu: (169 − 5) / 2 = **82 mm**.
-- Template Data Merge: **margin atas halaman template = 26 mm** (12 + 10 header + 4 jarak) agar kartu pertama tepat di bawah pita header.
+- Lebar kartu: (118 − 5) / 2 = **56.5 mm**. Tinggi kartu: (183 − 10 header − 4 jarak − 5) / 2 = **82 mm**.
+- Margin halaman direktori: **atas 26 mm** (12 + 10 header + 4 jarak), bawah 15, dalam 18, luar 12.
+- Karena margin dalam ≠ luar, setelah Data Merge jalankan `scripts/indesign/rapikan-direktori.jsx` agar kartu di halaman kiri ikut bergeser ke margin yang benar (lihat PLAN Tahap 6).
 
-### Varian A — direkomendasikan (foto kiri, judul lebar penuh)
+### Varian A — FINAL (foto kiri, judul selebar kartu)
 ```
-┌──────────────────────────────┐
-│ ┌──────┐ (01) chip emas       │
-│ │ FOTO │ NAMA WISUDAWAN       │
-│ │ 3:4  │ NIM 2201…            │
-│ │22×29 │ TTL Kota, tgl lahir  │
-│ └──────┘                      │
-│ ▭ IPK 3,xx · Predikat ▭       │
-│ JUDUL SKRIPSI                 │
-│ Judul skripsi mengalir di     │
-│ lebar penuh kartu (52 mm),    │
-│ ±36 karakter per baris,       │
-│ maksimum ±10 baris.           │
-└──────────────────────────────┘
+┌─────────────────────────────┐
+│ ┌──────┐ (01) chip emas      │
+│ │ FOTO │ NAMA WISUDAWAN      │
+│ │ 3:4  │ NIM 2201…           │
+│ │22×29 │ TTL Kota, tgl lahir │
+│ └──────┘                     │
+│ ▭ IPK 3,xx · Predikat ▭      │
+│ ▌JUDUL SKRIPSI               │
+│ ▌Judul skripsi mengalir      │
+│  selebar kartu (48.5 mm),    │
+│  maksimum ±9 baris.          │
+└─────────────────────────────┘
 ```
 - Padding kartu 3 mm. Foto 22 × 29.3 mm (rasio 3:4), sudut membulat 2 mm.
-- Kolom teks samping foto: lebar 27 mm (Nama, lalu NIM dan TTL dengan label sebaris).
-- Posisi frame relatif terhadap pojok kartu (y, x dalam mm): foto 3–32.3 / 3–25; chip No 3–7.5 / 28–36; info 8.5–35.5 / 28–55 (nama boleh sampai 4 baris); chip IPK 37–42 / 3–55; judul 45–79 / 3–55.
-- Area judul: 52 × 34 mm (termasuk label) → muat ±9 baris pada 8/10 pt (±330 karakter). Diuji di mockup dengan judul 254 karakter (7 baris) dan nama 49 karakter.
+- Kolom teks samping foto: lebar 25.5 mm (Nama, lalu NIM dan TTL dengan label sebaris).
+- Posisi frame relatif terhadap pojok kartu (y, x dalam mm): foto 3–32.3 / 3–25; chip No 3–7.5 / 28–36; info 8.5–35.5 / 28–53.5 (nama boleh sampai 4 baris); chip IPK 37–42 / 3–53.5; judul 45–79 / 3–53.5 (teks mulai x = 5 setelah garis aksen emas).
+- Area judul ±9 baris pada 8/10 pt (±310 karakter). Diuji di mockup dengan judul 254 karakter (7 baris) dan nama 49 karakter (pas, tanpa ruang sisa) — nama > 45 karakter tetap perlu dicek.
 
-### Varian B — alternatif (foto kiri, semua data di kanan)
-- Foto 22 × 29.3 mm di kiri, kolom data 30 mm di kanan sepanjang kartu.
-- Lebih "rapi" secara konsep, tetapi judul ±20 karakter per baris → judul panjang menjadi 12–16 baris dan nama panjang mudah terpotong. Hanya cocok bila judul rata-rata pendek.
+### Varian B — tidak dipakai
+Semua data di kolom kanan (±20 karakter per baris); judul panjang terpotong pada uji mockup v1. Ditolak pemilik proyek (Okt 2026).
 
 ## 7. Bahasa visual glassmorphism di InDesign
 InDesign tidak punya *background blur*. Cara mensimulasikannya:
@@ -122,7 +128,7 @@ InDesign tidak punya *background blur*. Cara mensimulasikannya:
 5. **Bila butuh blur sungguhan** (mis. cover dengan foto grup): buat di Photoshop, simpan PSD/TIFF 300 ppi, lalu place ke InDesign.
 6. Simpan semuanya sebagai **Object Styles**: `Kaca-Kartu`, `Kaca-Header`, `Chip-Emas`, `Foto-Bingkai`, `Ornamen-Lingkaran`.
 
-Catatan cetak: efek transparansi akan di-*flatten* saat ekspor PDF/X-1a. Untuk menghindari garis putih tipis (*stitching*), lebih aman pakai PDF/X-4 bila vendor menerima. Konfirmasi ke vendor.
+Catatan cetak: efek transparansi akan di-*flatten* saat ekspor PDF/X-1a. Untuk menghindari garis putih tipis (*stitching*), lebih aman pakai PDF/X-4 bila percetakan menerima. Percetakan baru menyebut “PDF” — **tanyakan PDF/X-1a atau PDF/X-4, dan profil warnanya**.
 
 ## 8. Foto wisudawan
 - Rasio **3:4** potret, wajah di sepertiga atas, latar seragam bila memungkinkan.

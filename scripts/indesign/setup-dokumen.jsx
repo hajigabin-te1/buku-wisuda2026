@@ -7,17 +7,17 @@
 // Status  : BELUM DIUJI di InDesign. Jalankan pada dokumen baru; dokumen lain tidak disentuh.
 // Cara    : Window > Utilities > Scripts > klik kanan "User" > Reveal in Explorer,
 //           salin file ini ke folder tersebut, lalu klik dua kali di panel Scripts.
-// Spesifikasi angka: docs/SPEK-DESAIN.md. Bleed & margin jilid WAJIB dicek ke percetakan.
+// Spesifikasi angka: docs/SPEK-DESAIN.md. Bleed 3 mm & margin dikonfirmasi percetakan (perfect binding).
 
 #target indesign
 
 (function () {
     // ---------- Konfigurasi (ubah di sini) ----------
     var CFG = {
-        lebar: 148, tinggi: 210, bleed: 3,             // bleed: konfirmasi vendor
-        mAtas: 12, mBawah: 15, mDalam: 15, mLuar: 12,  // halaman editorial
-        dirSamping: 13.5, dirAtas: 26,                 // halaman direktori: margin simetris
-        kartuL: 58, kartuT: 82, jarak: 5,
+        lebar: 148, tinggi: 210, bleed: 3,             // spesifikasi percetakan
+        mAtas: 12, mBawah: 15, mDalam: 18, mLuar: 12,  // margin dalam 18 mm: jilid lem panas
+        dirAtas: 26,                                   // halaman direktori: kartu mulai di bawah pita header
+        kartuL: 56.5, kartuT: 82, jarak: 5,
         warna: [
             ["UC-Primer-60", [235, 248, 255]],
             ["UC-Sekunder-30", [48, 129, 219]],
@@ -220,9 +220,9 @@
     }
     for (k = 0; k < mB.pages.length; k++) {
         pg = mB.pages[k];
-        pg.marginPreferences.properties = { top: CFG.dirAtas, bottom: CFG.mBawah, left: CFG.dirSamping, right: CFG.dirSamping };
+        pg.marginPreferences.properties = { top: CFG.dirAtas, bottom: CFG.mBawah, left: CFG.mDalam, right: CFG.mLuar };
         latar(pg); folio(pg);
-        var hx = [CFG.dirSamping, CFG.lebar - CFG.dirSamping];
+        var hx = batasX(pg, CFG.mDalam, CFG.mLuar);
         var hd = pg.textFrames.add({ geometricBounds: [CFG.mAtas, hx[0], CFG.mAtas + 10, hx[1]] });
         hd.contents = "Wisudawan Program Studi [ISI NAMA PRODI]";
         hd.appliedObjectStyle = osHeader;
@@ -233,8 +233,8 @@
     // ---------- Halaman 1: kartu contoh Varian A (titik awal Data Merge) ----------
     var hal = doc.pages[0];
     hal.appliedMaster = mB;
-    hal.marginPreferences.properties = { top: CFG.dirAtas, bottom: CFG.mBawah, left: CFG.dirSamping, right: CFG.dirSamping };
-    var x0 = CFG.dirSamping, y0 = CFG.dirAtas;
+    hal.marginPreferences.properties = { top: CFG.dirAtas, bottom: CFG.mBawah, left: CFG.mDalam, right: CFG.mLuar };
+    var x0 = batasX(hal, CFG.mDalam, CFG.mLuar)[0], y0 = CFG.dirAtas; // halaman 1 = halaman kanan
 
     function kotak(b, os) {
         var r = hal.rectangles.add({ geometricBounds: [y0 + b[0], x0 + b[1], y0 + b[2], x0 + b[3]] });
@@ -252,7 +252,7 @@
     var bg = kotak([0, 0, CFG.kartuT, CFG.kartuL], osKartu); bg.name = "kartu-latar";
     var foto = kotak([3, 3, 32.3, 25], osFoto); foto.name = "kartu-foto";
     var no = teks([3, 28, 7.5, 36], osChip, [[ps.dirNo, "\u00ABNo\u00BB"]]); no.name = "kartu-no";
-    var info = teks([8.5, 28, 35.5, 55], osTeksKartu, [
+    var info = teks([8.5, 28, 35.5, 53.5], osTeksKartu, [
         [ps.dirNama, "\u00ABNama\u00BB"],
         [ps.dirData, "NIM  \u00ABNIM\u00BB"],
         [ps.dirData, "TTL  \u00ABTTL\u00BB"]
@@ -262,8 +262,8 @@
         info.paragraphs[1].characters.itemByRange(0, 2).appliedCharacterStyle = csLabel;
         info.paragraphs[2].characters.itemByRange(0, 2).appliedCharacterStyle = csLabel;
     });
-    var ipk = teks([37, 3, 42, 55], osChipIpk, [[ps.dirIpk, "IPK \u00ABIPK\u00BB  \u00B7  \u00ABPredikat\u00BB"]]); ipk.name = "kartu-ipk";
-    var judul = teks([45, 3, 79, 55], osTeksKartu, [[ps.dirLabel, "Judul Skripsi"], [ps.dirJudul, "\u00ABJudul\u00BB"]]);
+    var ipk = teks([37, 3, 42, 53.5], osChipIpk, [[ps.dirIpk, "IPK \u00ABIPK\u00BB  \u00B7  \u00ABPredikat\u00BB"]]); ipk.name = "kartu-ipk";
+    var judul = teks([45, 3, 79, 53.5], osTeksKartu, [[ps.dirLabel, "Judul Skripsi"], [ps.dirJudul, "\u00ABJudul\u00BB"]]);
     judul.name = "kartu-judul";
 
     // catatan non-cetak di pasteboard

@@ -22,7 +22,7 @@ python scripts\validasi_data.py 03-Data\Data-Bersih\bisnis.xlsx ^
 - `bisnis-cek.csv` — salinan yang sama untuk dibuka di Excel.
 - `bisnis-laporan.txt` — daftar ERROR/WARNING, nilai predikat, dan 5 judul terpanjang.
 
-**Yang diperiksa:** kolom wajib, field kosong, NIM duplikat, nama ganda, No bukan angka, IPK di luar 0–4 / tidak dua desimal / campuran koma-titik, judul > 330 karakter, nama > 45 karakter, foto hilang, nama file foto tanpa NIM, resolusi foto (< 260×346 px = ERROR, < 600×800 px = WARNING), rasio bukan 3:4, data berlabel DUMMY. File masukan tidak pernah diubah; spasi ganda/tab/enter hanya dirapikan di keluaran.
+**Yang diperiksa:** kolom wajib, field kosong, NIM duplikat, nama ganda, No bukan angka, IPK di luar 0–4 / tidak dua desimal / campuran koma-titik, judul > 310 karakter, nama > 45 karakter, foto hilang, nama file foto tanpa NIM, resolusi foto (< 260×346 px = ERROR, < 600×800 px = WARNING), rasio bukan 3:4, data berlabel DUMMY. File masukan tidak pernah diubah; spasi ganda/tab/enter hanya dirapikan di keluaran.
 
 **Status uji:** diuji di Linux dengan `03-Data/CSV-DataMerge/DUMMY-contoh-wisudawan.csv` (CSV & XLSX, foto dummy hilang/kecil/tidak 3:4). Belum diuji dengan data asli di Windows. Impor `*-datamerge.txt` ke InDesign 2020 belum diuji — periksa karakter (é, “ ”, —) di Preview Data Merge.
 
@@ -35,11 +35,20 @@ python scripts\validasi_data.py 03-Data\Data-Bersih\bisnis.xlsx ^
 3. Klik dua kali skrip di panel. Dokumen baru dibuat; dokumen lain tidak disentuh.
 4. Baca pesan akhir (font pengganti / langkah yang dilewati), lalu *Save As* `05-InDesign/INDD/00-TEMPLATE-Sistem.indd`.
 
-**Hasil:** A5 facing pages + bleed 3 mm; swatch UC-*; paragraph styles H1-Bab, H2-Subjudul, Isi, Puitis, Lirik, Dir-*, Folio; character style Dir-Label-Inline; object styles Kaca-Kartu, Kaca-Header, Chip-Emas, Chip-IPK, Foto-Bingkai, Ornamen-Lingkaran, Teks-Kartu; master A-Isi, B-Direktori, C-Tanpa-Nomor; halaman 1 berisi satu kartu contoh Varian A dengan teks penanda `«Nama»` dsb.
+**Hasil:** A5 facing pages + bleed 3 mm, margin atas 12 / bawah 15 / dalam 18 / luar 12 (spesifikasi percetakan); swatch UC-*; paragraph styles H1-Bab, H2-Subjudul, Isi, Puitis, Lirik, Dir-*, Folio; character style Dir-Label-Inline; object styles Kaca-Kartu, Kaca-Header, Chip-Emas, Chip-IPK, Foto-Bingkai, Ornamen-Lingkaran, Teks-Kartu; master A-Isi, B-Direktori, C-Tanpa-Nomor; halaman 1 (halaman kanan) berisi satu kartu contoh Varian A 56.5 × 82 mm dengan teks penanda `«Nama»` dsb., plus catatan non-cetak di pasteboard (hapus sebelum merge).
 
 **Batasan:** BELUM DIUJI di InDesign (hanya cek sintaks JavaScript). Pengaturan efek (opasitas, drop shadow, gradient feather, sudut membulat) dibungkus `try` — bila gagal, dicatat di pesan akhir dan perlu diatur manual di Object Styles. Ubah angka bleed/margin di blok `CFG` setelah spesifikasi vendor diterima.
 
-## 3. `mockup/buat_mockup.py` — mockup konsep
+## 3. `indesign/rapikan-direktori.jsx` — rapikan kartu setelah merge
+Margin dalam (18 mm) ≠ luar (12 mm), sedangkan Data Merge belum tentu mencerminkan posisi kartu di halaman kiri. Skrip ini menggeser semua objek halaman (bukan master) di setiap halaman agar tepi kiri kartu menempel ke margin yang benar: halaman kanan → 18 mm, halaman kiri → 12 mm. Objek di pasteboard diabaikan.
+
+**Jalankan:** buka dokumen **hasil** merge (mis. `11-Direktori-Bisnis.indd`) → klik dua kali skrip di panel Scripts → periksa beberapa halaman kiri & kanan. Satu kali Ctrl+Z membatalkan seluruh pergeseran. Aman dijalankan ulang.
+
+**Penting:** halaman kiri/kanan ditentukan nomor halaman. Jalankan skrip setelah urutan halaman di Book final (atau jalankan ulang bila halaman sebelumnya bertambah/berkurang ganjil).
+
+**Batasan:** BELUM DIUJI di InDesign (hanya cek sintaks).
+
+## 4. `mockup/buat_mockup.py` — mockup konsep
 **Prasyarat:** Python 3 + Pillow, Node.js + `playwright` (Chromium), internet untuk Google Fonts.
-**Jalankan:** `python scripts/mockup/buat_mockup.py` → PNG + `KONSEP-Buku-Wisuda-2026.pdf` di `06-Proof/konsep/`.
+**Jalankan:** `python scripts/mockup/buat_mockup.py` → 14 PNG, `00-ringkasan.png` (semua halaman dalam satu gambar), dan `KONSEP-Buku-Wisuda-2026.pdf` di `06-Proof/konsep/`. Margin mengikuti spesifikasi percetakan; sisi jilid ditandai merah.
 **Batasan:** hanya acuan visual dari data DUMMY dan placeholder; bukan file cetak dan bukan file InDesign.

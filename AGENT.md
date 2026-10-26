@@ -95,6 +95,13 @@ Pertahankan tiga unsur utama: kenangan, perjuangan, dan harapan.
 Jangan memperpanjang naskah tanpa alasan; sisakan ruang putih yang cukup.
 Pertahankan frasa tema “Untukmu, cinta” jika sesuai dengan tata letak.
 
+##Spesifikasi percetakan (dikonfirmasi pemilik proyek, Okt 2026)
+- Ukuran jadi 148 × 210 mm; bleed 3 mm semua sisi (ukuran dengan bleed 154 × 216 mm).
+- Margin: atas 12 mm, bawah 15 mm, dalam/sisi jilid 18 mm, luar 12 mm.
+- Jilid lem panas (perfect binding). Format serah: PDF.
+- Belum dikonfirmasi: standar PDF/X & profil warna, crop marks, kelipatan halaman, kertas, lebar punggung sampul.
+- Kartu direktori memakai Varian A (foto kiri, nama/NIM/TTL di samping foto, IPK–predikat dan judul selebar kartu); lihat `docs/SPEK-DESAIN.md`.
+
 ##Data dan foto
 - Siapkan Excel/CSV dengan satu baris per wisudawan.
 - Header CSV yang pernah disiapkan: `Foto,NIM,Nama,TTL,IPK,Predikat,Judul`.
